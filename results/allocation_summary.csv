@@ -1,0 +1,151 @@
+Order ID,Product,Qty,Destination,Assigned Plant,Total Cost,Carbon (kg),Delivery
+O-001,P1,160,Mexico,Plant C,3923,278,On time
+O-002,P2,310,Brazil,Plant B,14089,1393,On time
+O-003,P2,150,South Africa,Plant A,4696,1476,On time
+O-004,P5,270,China,Plant A,7060,2320,On time
+O-005,P1,260,Brazil,Plant C,6898,400,On time
+O-006,P3,290,UK,Plant C,14834,458,On time
+O-007,P1,250,China,Plant A,4819,1677,On time
+O-008,P2,170,UK,Plant A,5355,1749,On time
+O-009,P2,280,Germany,Plant B,11019,978,On time
+O-010,P2,310,France,Plant B,12277,1160,On time
+O-011,P2,270,Japan,Plant A,8005,2615,On time
+O-012,P4,170,France,Plant B,12201,975,On time
+O-013,P2,190,USA,Plant C,6950,211,On time
+O-014,P3,290,India,Plant A,11409,3427,On time
+O-015,P2,270,Mexico,Plant B,11206,1186,On time
+O-016,P3,150,Brazil,Plant B,9379,824,On time
+O-017,P3,240,USA,Plant C,12106,295,On time
+O-018,P1,330,Australia,Plant A,6433,2296,On time
+O-019,P3,280,Australia,Plant C,14961,610,On time
+O-020,P4,220,Mexico,Plant B,16490,1405,Late (3 days)
+O-021,P3,140,Germany,Plant B,7607,629,On time
+O-022,P3,150,Japan,Plant A,6102,1877,On time
+O-023,P1,170,France,Plant B,4372,467,On time
+O-024,P1,280,South Africa,Plant A,5768,1962,On time
+O-025,P6,210,Brazil,Plant C,19352,424,On time
+O-026,P1,300,China,Plant C,8091,522,On time
+O-027,P2,240,Japan,Plant C,9206,422,On time
+O-028,P6,180,Mexico,Plant C,14960,400,On time
+O-029,P1,250,UAE,Plant A,4992,1727,On time
+O-030,P3,270,Japan,Plant A,10983,3379,On time
+O-031,P1,400,UK,Plant B,10668,1198,On time
+O-032,P6,160,South Africa,Plant C,14210,371,On time
+O-033,P6,200,UAE,Plant C,17398,444,On time
+O-034,P1,290,India,Plant A,5429,1786,On time
+O-035,P1,180,China,Plant A,3470,1207,On time
+O-036,P4,120,USA,Plant A,7922,1937,On time
+O-037,P2,290,China,Plant A,8579,2766,On time
+O-038,P1,240,Germany,Plant B,6112,599,On time
+O-039,P1,160,UAE,Plant A,3195,1105,On time
+O-040,P5,250,France,Plant C,8192,368,On time
+O-041,P4,200,China,Plant A,10705,3039,On time
+O-042,P5,240,Mexico,Plant C,7934,437,On time
+O-043,P5,300,Mexico,Plant A,8955,2893,On time
+O-044,P3,280,Australia,Plant A,11348,3532,On time
+O-045,P1,310,Japan,Plant A,6026,2126,On time
+O-046,P2,230,Mexico,Plant C,8586,428,On time
+O-047,P1,260,France,Plant C,6255,361,On time
+O-048,P6,240,UAE,Plant C,20878,533,Late (20 days)
+O-049,P2,220,China,Plant A,6508,2098,On time
+O-050,P1,170,Japan,Plant C,4256,279,On time
+O-051,P4,160,Germany,Plant B,11443,878,On time
+O-052,P1,160,UAE,Plant A,3195,1105,On time
+O-053,P1,310,South Africa,Plant A,6386,2172,On time
+O-054,P2,160,Japan,Plant A,4744,1550,On time
+O-055,P2,310,UAE,Plant A,9355,3018,On time
+O-056,P3,170,South Africa,Plant A,7288,2153,On time
+O-057,P2,140,UK,Plant C,5182,204,On time
+O-058,P4,300,Germany,Plant B,21456,1646,On time
+O-059,P3,260,Germany,Plant B,14127,1167,On time
+O-060,P2,250,UK,Plant A,7875,2572,On time
+O-061,P4,280,Brazil,Plant B,22993,1816,On time
+O-062,P5,170,India,Plant A,4306,1367,On time
+O-063,P4,250,South Africa,Plant A,14042,3874,On time
+O-064,P2,320,Brazil,Plant C,13081,531,On time
+O-065,P4,300,UAE,Plant A,16167,4618,On time
+O-066,P5,260,Mexico,Plant C,8596,473,On time
+O-067,P3,230,UAE,Plant B,13098,1171,On time
+O-068,P3,150,India,Plant B,9392,794,On time
+O-069,P5,290,USA,Plant C,9370,310,Late (26 days)
+O-070,P5,270,France,Plant A,7571,2496,On time
+O-071,P1,260,USA,Plant C,6180,257,On time
+O-072,P3,210,UAE,Plant A,8654,2639,On time
+O-073,P6,180,USA,Plant C,14825,265,Late (16 days)
+O-074,P5,210,France,Plant A,5889,1941,On time
+O-075,P2,260,China,Plant A,7692,2480,On time
+O-076,P4,160,Japan,Plant A,8537,2455,On time
+O-077,P5,500,Germany,Plant C,16385,735,Late (27 days)
+O-078,P6,230,Mexico,Plant C,19115,511,On time
+O-079,P1,310,France,Plant B,7973,851,On time
+O-080,P4,210,Mexico,Plant B,15741,1341,Late (5 days)
+O-081,P3,270,Brazil,Plant B,16883,1482,On time
+O-082,P4,130,South Africa,Plant A,7302,2014,On time
+O-083,P3,140,South Africa,Plant C,7652,291,On time
+O-084,P1,240,USA,Plant C,5705,238,On time
+O-085,P1,320,China,Plant A,6168,2147,On time
+O-086,P5,290,UK,Plant A,8129,2710,On time
+O-087,P2,320,UAE,Plant A,9657,3116,On time
+O-088,P3,290,Australia,Plant A,11753,3659,On time
+O-089,P1,320,Japan,Plant A,6221,2195,On time
+O-090,P4,180,India,Plant A,9297,2636,On time
+O-091,P5,160,Japan,Plant A,4199,1399,On time
+O-092,P2,140,Australia,Plant A,4144,1370,On time
+O-093,P5,140,China,Plant A,3661,1203,On time
+O-094,P3,140,Mexico,Plant C,7167,277,On time
+O-095,P4,250,France,Plant B,17942,1434,Late (19 days)
+O-096,P2,320,UAE,Plant A,9657,3116,On time
+O-097,P1,320,Japan,Plant A,6221,2195,On time
+O-098,P2,300,UK,Plant B,12291,1198,On time
+O-099,P1,190,Germany,Plant B,4839,474,On time
+O-100,P2,240,UAE,Plant A,7243,2337,On time
+O-101,P4,190,China,Plant A,10170,2887,On time
+O-102,P3,280,China,Plant A,11402,3462,On time
+O-103,P1,330,India,Plant A,6178,2032,On time
+O-104,P4,250,USA,Plant B,18803,1547,On time
+O-105,P1,250,UAE,Plant A,4992,1727,On time
+O-106,P2,240,Brazil,Plant C,9811,398,On time
+O-107,P3,240,Japan,Plant A,9763,3004,On time
+O-108,P2,290,Germany,Plant B,11412,1013,On time
+O-109,P3,120,Mexico,Plant C,6143,238,On time
+O-110,P1,210,Mexico,Plant B,5683,713,On time
+O-111,P1,320,UK,Plant B,8534,958,On time
+O-112,P2,350,France,Plant B,13861,1310,On time
+O-113,P3,140,UAE,Plant B,7973,713,On time
+O-114,P4,250,Australia,Plant A,13271,3861,On time
+O-115,P3,280,UAE,Plant B,15945,1425,On time
+O-116,P5,200,Mexico,Plant C,6612,364,On time
+O-117,P5,210,South Africa,Plant A,5825,1868,On time
+O-118,P6,170,Australia,Plant C,14727,411,On time
+O-119,P3,170,China,Plant A,6923,2102,On time
+O-120,P5,230,USA,Plant C,7431,246,Late (2 days)
+O-121,P5,240,Australia,Plant A,6296,2123,On time
+O-122,P1,260,South Africa,Plant A,5356,1822,On time
+O-123,P1,300,UAE,Plant B,7991,928,On time
+O-124,P2,230,Japan,Plant A,6819,2228,On time
+O-125,P2,250,China,Plant A,7396,2384,On time
+O-126,P6,190,Japan,Plant C,16334,403,Late (10 days)
+O-127,P1,260,Germany,Plant B,6622,649,On time
+O-128,P2,220,India,Plant B,9984,944,On time
+O-129,P2,300,South Africa,Plant A,9391,2951,On time
+O-130,P2,240,USA,Plant C,8779,266,On time
+O-131,P1,300,USA,Plant C,7131,297,On time
+O-132,P2,280,India,Plant B,12706,1202,On time
+O-133,P2,180,USA,Plant C,6584,200,On time
+O-134,P1,260,Germany,Plant B,6622,649,On time
+O-135,P1,230,China,Plant A,4433,1543,On time
+O-136,P2,310,UK,Plant B,12701,1238,On time
+O-137,P3,230,Germany,Plant B,12497,1033,On time
+O-138,P5,300,Australia,Plant A,7870,2653,On time
+O-139,P2,260,Brazil,Plant C,10628,432,On time
+O-140,P1,300,USA,Plant C,7131,297,On time
+O-141,P1,230,Mexico,Plant C,5640,400,On time
+O-142,P4,290,India,Plant A,14979,4247,On time
+O-143,P3,300,Brazil,Plant C,16920,534,On time
+O-144,P1,260,Germany,Plant B,6622,649,On time
+O-145,P5,300,UK,Plant C,9798,426,On time
+O-146,P1,180,Australia,Plant A,3509,1252,On time
+O-147,P1,210,Mexico,Plant C,5149,365,On time
+O-148,P6,240,Brazil,Plant C,22116,485,Late (15 days)
+O-149,P3,200,Brazil,Plant B,12506,1098,Late (12 days)
+O-150,P6,240,Australia,Plant C,20791,581,Late (15 days)

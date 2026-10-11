@@ -1,0 +1,6251 @@
+{
+  "plan": {
+    "run_config": {
+      "planning_start": "2026-10-12",
+      "horizon_weeks": null,
+      "ship_day_offset": 4,
+      "duty_base": "exworks",
+      "default_energy_price": null,
+      "event_overlap_rule": "sum_capped",
+      "cost_weight": 0.7,
+      "carbon_weight": 0.3,
+      "carbon_cap_kg": null,
+      "deadline_mode": "soft",
+      "late_order_penalty": 10.0,
+      "late_day_penalty": 0.1,
+      "unserved_penalty": 1000.0,
+      "move_penalty": 0.002,
+      "solver": "auto",
+      "solver_time_limit": 120,
+      "solver_gap": 0.0
+    },
+    "planning_start": "2026-10-12",
+    "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "events_applied": [
+      "EV-01",
+      "EV-02",
+      "EV-03",
+      "EV-04"
+    ],
+    "capacity_event_log": [
+      {
+        "plant": "A",
+        "week": 1,
+        "week_start": "2026-10-12",
+        "events": [
+          "EV-02"
+        ],
+        "capacity_factor": 0.5
+      },
+      {
+        "plant": "A",
+        "week": 2,
+        "week_start": "2026-10-19",
+        "events": [
+          "EV-02"
+        ],
+        "capacity_factor": 0.5
+      },
+      {
+        "plant": "B",
+        "week": 2,
+        "week_start": "2026-10-19",
+        "events": [
+          "EV-01"
+        ],
+        "capacity_factor": 0.7
+      },
+      {
+        "plant": "B",
+        "week": 3,
+        "week_start": "2026-10-26",
+        "events": [
+          "EV-01",
+          "EV-04"
+        ],
+        "capacity_factor": 0.0
+      },
+      {
+        "plant": "B",
+        "week": 4,
+        "week_start": "2026-11-02",
+        "events": [
+          "EV-04"
+        ],
+        "capacity_factor": 0.0
+      },
+      {
+        "plant": "C",
+        "week": 1,
+        "week_start": "2026-10-12",
+        "events": [
+          "EV-03"
+        ],
+        "capacity_factor": 0.25
+      },
+      {
+        "plant": "C",
+        "week": 2,
+        "week_start": "2026-10-19",
+        "events": [
+          "EV-03"
+        ],
+        "capacity_factor": 0.25
+      }
+    ],
+    "data_issues": [],
+    "notes": [],
+    "assumptions": [
+      "planning start 2026-10-12 (given)",
+      "Capacity is per plant AND product per week (plants.csv has one row per plant-product); each order consumes the capacity of its own product line only.",
+      "An order ships on day 4 (0=Mon) of the week its last unit is built; arrival = ship date + transit_days. Production lead time inside a week is not modelled.",
+      "Orders are never split across plants; a large order may be built over several weeks at the same plant (earliest-deadline-first) and ships when its last unit is built.",
+      "Landed cost = production + energy (kWh x price from energy_price_per_kwh column) + transport + duty; duty base = exworks.",
+      "Carbon = energy_kwh_per_unit x carbon_kg_per_kwh + transport carbon_kg_per_unit, times qty.",
+      "Weights cost 0.7 / carbon 0.3; each normalised by the sum of per-order minima so 1.0 = 'best possible' on that axis.",
+      "Priority: serve every order > minimise late orders > minimise late days > weighted cost/carbon.",
+      "Overlapping capacity events on the same plant and day combine by 'sum_capped'; a partial-week event reduces capacity by the share of affected days.",
+      "Deadline mode 'soft'."
+    ],
+    "limitations": [
+      "Duty rates and transit days assumed constant over the horizon.",
+      "No weekly variation in carbon intensity (no such column in the schema).",
+      "No inventory/holding cost for building early.",
+      "Capacity unit assumed to be 'units of that product per week'."
+    ],
+    "status": "OPTIMAL",
+    "objective_value": 138.570093,
+    "normalisation": {
+      "cost_ref": 1300934.78,
+      "carbon_ref_kg": 79927.32
+    },
+    "allocation": [
+      {
+        "order_id": "O-001",
+        "product": "P1",
+        "qty": 160,
+        "destination": "Mexico",
+        "due": "2026-10-31",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-10-29",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 125.0,
+          "2": 35.0
+        },
+        "landed_cost": 3923.2,
+        "carbon_kg": 278.4,
+        "cost_breakdown": {
+          "production": 3360.0,
+          "energy": 67.2,
+          "transport": 496.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 38.4,
+          "transport": 240.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-002",
+        "product": "P2",
+        "qty": 310,
+        "destination": "Brazil",
+        "due": "2026-11-22",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-10",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 260.0,
+          "2": 50.0
+        },
+        "landed_cost": 14088.66,
+        "carbon_kg": 1392.675,
+        "cost_breakdown": {
+          "production": 10912.0,
+          "energy": 636.12,
+          "transport": 923.8,
+          "duty": 1616.74
+        },
+        "carbon_breakdown": {
+          "manufacturing": 927.675,
+          "transport": 465.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-003",
+        "product": "P2",
+        "qty": 150,
+        "destination": "South Africa",
+        "due": "2026-11-13",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-31",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 150.0
+        },
+        "landed_cost": 4695.6,
+        "carbon_kg": 1475.55,
+        "cost_breakdown": {
+          "production": 3840.0,
+          "energy": 139.72,
+          "transport": 397.5,
+          "duty": 318.38
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1273.05,
+          "transport": 202.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-004",
+        "product": "P5",
+        "qty": 270,
+        "destination": "China",
+        "due": "2026-11-15",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-15",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 50.0,
+          "4": 220.0
+        },
+        "landed_cost": 7059.72,
+        "carbon_kg": 2320.38,
+        "cost_breakdown": {
+          "production": 6048.0,
+          "energy": 223.56,
+          "transport": 537.3,
+          "duty": 250.86
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2036.88,
+          "transport": 283.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-005",
+        "product": "P1",
+        "qty": 260,
+        "destination": "Brazil",
+        "due": "2026-12-13",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 7,
+        "finish_by_week": 7,
+        "ship_date": "2026-11-27",
+        "arrival": "2026-12-11",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "6": 30.0,
+          "7": 230.0
+        },
+        "landed_cost": 6897.9,
+        "carbon_kg": 400.4,
+        "cost_breakdown": {
+          "production": 5460.0,
+          "energy": 109.2,
+          "transport": 660.4,
+          "duty": 668.3
+        },
+        "carbon_breakdown": {
+          "manufacturing": 62.4,
+          "transport": 338.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-006",
+        "product": "P3",
+        "qty": 290,
+        "destination": "UK",
+        "due": "2026-12-05",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 6,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-20",
+        "arrival": "2026-11-30",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 5.0,
+          "6": 285.0
+        },
+        "landed_cost": 14834.02,
+        "carbon_kg": 458.2,
+        "cost_breakdown": {
+          "production": 13702.5,
+          "energy": 243.6,
+          "transport": 609.0,
+          "duty": 278.92
+        },
+        "carbon_breakdown": {
+          "manufacturing": 139.2,
+          "transport": 319.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-007",
+        "product": "P1",
+        "qty": 250,
+        "destination": "China",
+        "due": "2026-11-15",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 4,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-08",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 250.0
+        },
+        "landed_cost": 4818.96,
+        "carbon_kg": 1677.0,
+        "cost_breakdown": {
+          "production": 4000.0,
+          "energy": 155.25,
+          "transport": 497.5,
+          "duty": 166.21
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1414.5,
+          "transport": 262.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-008",
+        "product": "P2",
+        "qty": 170,
+        "destination": "UK",
+        "due": "2026-11-17",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-11-09",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 170.0
+        },
+        "landed_cost": 5354.67,
+        "carbon_kg": 1748.79,
+        "cost_breakdown": {
+          "production": 4352.0,
+          "energy": 158.35,
+          "transport": 618.8,
+          "duty": 225.52
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1442.79,
+          "transport": 306.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-009",
+        "product": "P2",
+        "qty": 280,
+        "destination": "Germany",
+        "due": "2026-11-20",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-15",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 280.0
+        },
+        "landed_cost": 11018.56,
+        "carbon_kg": 977.9,
+        "cost_breakdown": {
+          "production": 9856.0,
+          "energy": 574.56,
+          "transport": 588.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 837.9,
+          "transport": 140.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-010",
+        "product": "P2",
+        "qty": 310,
+        "destination": "France",
+        "due": "2026-11-18",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-16",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 310.0
+        },
+        "landed_cost": 12276.62,
+        "carbon_kg": 1160.175,
+        "cost_breakdown": {
+          "production": 10912.0,
+          "energy": 636.12,
+          "transport": 728.5,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 927.675,
+          "transport": 232.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-011",
+        "product": "P2",
+        "qty": 270,
+        "destination": "Japan",
+        "due": "2026-11-11",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-11",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 210.0,
+          "3": 60.0
+        },
+        "landed_cost": 8004.81,
+        "carbon_kg": 2615.49,
+        "cost_breakdown": {
+          "production": 6912.0,
+          "energy": 251.5,
+          "transport": 626.4,
+          "duty": 214.91
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2291.49,
+          "transport": 324.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-012",
+        "product": "P4",
+        "qty": 170,
+        "destination": "France",
+        "due": "2026-11-10",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 4,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-10-26",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 170.0
+        },
+        "landed_cost": 12200.9,
+        "carbon_kg": 975.375,
+        "cost_breakdown": {
+          "production": 11220.0,
+          "energy": 581.4,
+          "transport": 399.5,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 847.875,
+          "transport": 127.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-013",
+        "product": "P2",
+        "qty": 190,
+        "destination": "USA",
+        "due": "2026-11-20",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-16",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 30.0,
+          "5": 160.0
+        },
+        "landed_cost": 6950.2,
+        "carbon_kg": 210.9,
+        "cost_breakdown": {
+          "production": 6384.0,
+          "energy": 119.7,
+          "transport": 446.5,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 68.4,
+          "transport": 142.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-014",
+        "product": "P3",
+        "qty": 290,
+        "destination": "India",
+        "due": "2026-11-14",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 4,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-01",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 290.0
+        },
+        "landed_cost": 11409.18,
+        "carbon_kg": 3426.64,
+        "cost_breakdown": {
+          "production": 10440.0,
+          "energy": 360.18,
+          "transport": 609.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 3281.64,
+          "transport": 145.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-015",
+        "product": "P2",
+        "qty": 270,
+        "destination": "Mexico",
+        "due": "2026-11-15",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-08",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 270.0
+        },
+        "landed_cost": 11205.56,
+        "carbon_kg": 1185.975,
+        "cost_breakdown": {
+          "production": 9504.0,
+          "energy": 554.04,
+          "transport": 745.2,
+          "duty": 402.32
+        },
+        "carbon_breakdown": {
+          "manufacturing": 807.975,
+          "transport": 378.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-016",
+        "product": "P3",
+        "qty": 150,
+        "destination": "Brazil",
+        "due": "2026-11-03",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 1,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-11-03",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 150.0
+        },
+        "landed_cost": 9379.36,
+        "carbon_kg": 823.5,
+        "cost_breakdown": {
+          "production": 7425.0,
+          "energy": 410.4,
+          "transport": 447.0,
+          "duty": 1096.96
+        },
+        "carbon_breakdown": {
+          "manufacturing": 598.5,
+          "transport": 225.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-017",
+        "product": "P3",
+        "qty": 240,
+        "destination": "USA",
+        "due": "2026-11-22",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-09",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 125.0,
+          "4": 115.0
+        },
+        "landed_cost": 12105.6,
+        "carbon_kg": 295.2,
+        "cost_breakdown": {
+          "production": 11340.0,
+          "energy": 201.6,
+          "transport": 564.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 115.2,
+          "transport": 180.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-018",
+        "product": "P1",
+        "qty": 330,
+        "destination": "Australia",
+        "due": "2026-12-05",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-20",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 150.0,
+          "4": 180.0
+        },
+        "landed_cost": 6432.83,
+        "carbon_kg": 2296.14,
+        "cost_breakdown": {
+          "production": 5280.0,
+          "energy": 204.93,
+          "transport": 838.2,
+          "duty": 109.7
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1867.14,
+          "transport": 429.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-019",
+        "product": "P3",
+        "qty": 280,
+        "destination": "Australia",
+        "due": "2026-12-05",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-12-05",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 235.0,
+          "5": 45.0
+        },
+        "landed_cost": 14961.41,
+        "carbon_kg": 610.4,
+        "cost_breakdown": {
+          "production": 13230.0,
+          "energy": 235.2,
+          "transport": 957.6,
+          "duty": 538.61
+        },
+        "carbon_breakdown": {
+          "manufacturing": 134.4,
+          "transport": 476.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-020",
+        "product": "P4",
+        "qty": 220,
+        "destination": "Mexico",
+        "due": "2026-11-26",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [
+          "LATE"
+        ],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-29",
+        "on_time": false,
+        "late_days": 3,
+        "production_by_week": {
+          "2": 30.0,
+          "5": 190.0
+        },
+        "landed_cost": 16490.5,
+        "carbon_kg": 1405.25,
+        "cost_breakdown": {
+          "production": 14520.0,
+          "energy": 752.4,
+          "transport": 607.2,
+          "duty": 610.9
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1097.25,
+          "transport": 308.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-021",
+        "product": "P3",
+        "qty": 140,
+        "destination": "Germany",
+        "due": "2026-10-26",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-18",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 140.0
+        },
+        "landed_cost": 7607.04,
+        "carbon_kg": 628.6,
+        "cost_breakdown": {
+          "production": 6930.0,
+          "energy": 383.04,
+          "transport": 294.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 558.6,
+          "transport": 70.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-022",
+        "product": "P3",
+        "qty": 150,
+        "destination": "Japan",
+        "due": "2026-11-08",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-28",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 150.0
+        },
+        "landed_cost": 6101.89,
+        "carbon_kg": 1877.4,
+        "cost_breakdown": {
+          "production": 5400.0,
+          "energy": 186.3,
+          "transport": 348.0,
+          "duty": 167.59
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1697.4,
+          "transport": 180.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-023",
+        "product": "P1",
+        "qty": 170,
+        "destination": "France",
+        "due": "2026-11-03",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-10-26",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 130.0,
+          "2": 40.0
+        },
+        "landed_cost": 4372.06,
+        "carbon_kg": 466.65,
+        "cost_breakdown": {
+          "production": 3740.0,
+          "energy": 232.56,
+          "transport": 399.5,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 339.15,
+          "transport": 127.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-024",
+        "product": "P1",
+        "qty": 280,
+        "destination": "South Africa",
+        "due": "2026-11-15",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-07",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 280.0
+        },
+        "landed_cost": 5768.19,
+        "carbon_kg": 1962.24,
+        "cost_breakdown": {
+          "production": 4480.0,
+          "energy": 173.88,
+          "transport": 742.0,
+          "duty": 372.31
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1584.24,
+          "transport": 378.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-025",
+        "product": "P6",
+        "qty": 210,
+        "destination": "Brazil",
+        "due": "2026-11-15",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-13",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 70.0,
+          "3": 140.0
+        },
+        "landed_cost": 19351.75,
+        "carbon_kg": 424.2,
+        "cost_breakdown": {
+          "production": 16537.5,
+          "energy": 264.6,
+          "transport": 533.4,
+          "duty": 2016.25
+        },
+        "carbon_breakdown": {
+          "manufacturing": 151.2,
+          "transport": 273.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-026",
+        "product": "P1",
+        "qty": 300,
+        "destination": "China",
+        "due": "2026-12-10",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 6,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-20",
+        "arrival": "2026-12-08",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 70.0,
+          "6": 230.0
+        },
+        "landed_cost": 8091.12,
+        "carbon_kg": 522.0,
+        "cost_breakdown": {
+          "production": 6300.0,
+          "energy": 126.0,
+          "transport": 894.0,
+          "duty": 771.12
+        },
+        "carbon_breakdown": {
+          "manufacturing": 72.0,
+          "transport": 450.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-027",
+        "product": "P2",
+        "qty": 240,
+        "destination": "Japan",
+        "due": "2026-12-04",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-29",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 240.0
+        },
+        "landed_cost": 9206.21,
+        "carbon_kg": 422.4,
+        "cost_breakdown": {
+          "production": 8064.0,
+          "energy": 151.2,
+          "transport": 662.4,
+          "duty": 328.61
+        },
+        "carbon_breakdown": {
+          "manufacturing": 86.4,
+          "transport": 336.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-028",
+        "product": "P6",
+        "qty": 180,
+        "destination": "Mexico",
+        "due": "2026-11-15",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-12",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 130.0,
+          "4": 50.0
+        },
+        "landed_cost": 14959.8,
+        "carbon_kg": 399.6,
+        "cost_breakdown": {
+          "production": 14175.0,
+          "energy": 226.8,
+          "transport": 558.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 129.6,
+          "transport": 270.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-029",
+        "product": "P1",
+        "qty": 250,
+        "destination": "UAE",
+        "due": "2026-11-06",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-10-28",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 250.0
+        },
+        "landed_cost": 4992.41,
+        "carbon_kg": 1727.0,
+        "cost_breakdown": {
+          "production": 4000.0,
+          "energy": 155.25,
+          "transport": 712.5,
+          "duty": 124.66
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1414.5,
+          "transport": 312.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-030",
+        "product": "P3",
+        "qty": 270,
+        "destination": "Japan",
+        "due": "2026-11-15",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-11",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 110.0,
+          "3": 160.0
+        },
+        "landed_cost": 10983.4,
+        "carbon_kg": 3379.32,
+        "cost_breakdown": {
+          "production": 9720.0,
+          "energy": 335.34,
+          "transport": 626.4,
+          "duty": 301.66
+        },
+        "carbon_breakdown": {
+          "manufacturing": 3055.32,
+          "transport": 324.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-031",
+        "product": "P1",
+        "qty": 400,
+        "destination": "UK",
+        "due": "2026-10-27",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-20",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 400.0
+        },
+        "landed_cost": 10667.62,
+        "carbon_kg": 1198.0,
+        "cost_breakdown": {
+          "production": 8800.0,
+          "energy": 547.2,
+          "transport": 1040.0,
+          "duty": 280.42
+        },
+        "carbon_breakdown": {
+          "manufacturing": 798.0,
+          "transport": 400.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-032",
+        "product": "P6",
+        "qty": 160,
+        "destination": "South Africa",
+        "due": "2026-11-19",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-19",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 160.0
+        },
+        "landed_cost": 14209.71,
+        "carbon_kg": 371.2,
+        "cost_breakdown": {
+          "production": 12600.0,
+          "energy": 201.6,
+          "transport": 512.0,
+          "duty": 896.11
+        },
+        "carbon_breakdown": {
+          "manufacturing": 115.2,
+          "transport": 256.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-033",
+        "product": "P6",
+        "qty": 200,
+        "destination": "UAE",
+        "due": "2026-11-25",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-24",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 200.0
+        },
+        "landed_cost": 17398.1,
+        "carbon_kg": 444.0,
+        "cost_breakdown": {
+          "production": 15750.0,
+          "energy": 252.0,
+          "transport": 596.0,
+          "duty": 800.1
+        },
+        "carbon_breakdown": {
+          "manufacturing": 144.0,
+          "transport": 300.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-034",
+        "product": "P1",
+        "qty": 290,
+        "destination": "India",
+        "due": "2026-12-02",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 7,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-08",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 290.0
+        },
+        "landed_cost": 5429.09,
+        "carbon_kg": 1785.82,
+        "cost_breakdown": {
+          "production": 4640.0,
+          "energy": 180.09,
+          "transport": 609.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1640.82,
+          "transport": 145.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-035",
+        "product": "P1",
+        "qty": 180,
+        "destination": "China",
+        "due": "2026-12-04",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-15",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 180.0
+        },
+        "landed_cost": 3469.65,
+        "carbon_kg": 1207.44,
+        "cost_breakdown": {
+          "production": 2880.0,
+          "energy": 111.78,
+          "transport": 358.2,
+          "duty": 119.67
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1018.44,
+          "transport": 189.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-036",
+        "product": "P4",
+        "qty": 120,
+        "destination": "USA",
+        "due": "2026-11-17",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 1,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-11-13",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 120.0
+        },
+        "landed_cost": 7922.47,
+        "carbon_kg": 1937.4,
+        "cost_breakdown": {
+          "production": 5760.0,
+          "energy": 186.3,
+          "transport": 489.6,
+          "duty": 1486.58
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1697.4,
+          "transport": 240.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-037",
+        "product": "P2",
+        "qty": 290,
+        "destination": "China",
+        "due": "2026-11-26",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-15",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 270.0,
+          "4": 20.0
+        },
+        "landed_cost": 8579.0,
+        "carbon_kg": 2765.73,
+        "cost_breakdown": {
+          "production": 7424.0,
+          "energy": 270.13,
+          "transport": 577.1,
+          "duty": 307.77
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2461.23,
+          "transport": 304.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-038",
+        "product": "P1",
+        "qty": 240,
+        "destination": "Germany",
+        "due": "2026-11-08",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 4,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-10-25",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 240.0
+        },
+        "landed_cost": 6112.32,
+        "carbon_kg": 598.8,
+        "cost_breakdown": {
+          "production": 5280.0,
+          "energy": 328.32,
+          "transport": 504.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 478.8,
+          "transport": 120.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-039",
+        "product": "P1",
+        "qty": 160,
+        "destination": "UAE",
+        "due": "2026-11-14",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 4,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-04",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 160.0
+        },
+        "landed_cost": 3195.14,
+        "carbon_kg": 1105.28,
+        "cost_breakdown": {
+          "production": 2560.0,
+          "energy": 99.36,
+          "transport": 456.0,
+          "duty": 79.78
+        },
+        "carbon_breakdown": {
+          "manufacturing": 905.28,
+          "transport": 200.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-040",
+        "product": "P5",
+        "qty": 250,
+        "destination": "France",
+        "due": "2026-11-15",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-10",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 112.5,
+          "2": 112.5,
+          "3": 25.0
+        },
+        "landed_cost": 8192.3,
+        "carbon_kg": 367.5,
+        "cost_breakdown": {
+          "production": 7350.0,
+          "energy": 140.0,
+          "transport": 552.5,
+          "duty": 149.8
+        },
+        "carbon_breakdown": {
+          "manufacturing": 80.0,
+          "transport": 287.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-041",
+        "product": "P4",
+        "qty": 200,
+        "destination": "China",
+        "due": "2026-11-03",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-25",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 200.0
+        },
+        "landed_cost": 10704.92,
+        "carbon_kg": 3039.0,
+        "cost_breakdown": {
+          "production": 9600.0,
+          "energy": 310.5,
+          "transport": 398.0,
+          "duty": 396.42
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2829.0,
+          "transport": 210.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-042",
+        "product": "P5",
+        "qty": 240,
+        "destination": "Mexico",
+        "due": "2026-11-12",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-12",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 125.0,
+          "4": 115.0
+        },
+        "landed_cost": 7934.4,
+        "carbon_kg": 436.8,
+        "cost_breakdown": {
+          "production": 7056.0,
+          "energy": 134.4,
+          "transport": 744.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 76.8,
+          "transport": 360.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-043",
+        "product": "P5",
+        "qty": 300,
+        "destination": "Mexico",
+        "due": "2026-12-01",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-29",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 20.0,
+          "3": 280.0
+        },
+        "landed_cost": 8955.24,
+        "carbon_kg": 2893.2,
+        "cost_breakdown": {
+          "production": 6720.0,
+          "energy": 248.4,
+          "transport": 1290.0,
+          "duty": 696.84
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2263.2,
+          "transport": 630.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-044",
+        "product": "P3",
+        "qty": 280,
+        "destination": "Australia",
+        "due": "2026-11-13",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-13",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 280.0
+        },
+        "landed_cost": 11347.52,
+        "carbon_kg": 3532.48,
+        "cost_breakdown": {
+          "production": 10080.0,
+          "energy": 347.76,
+          "transport": 711.2,
+          "duty": 208.56
+        },
+        "carbon_breakdown": {
+          "manufacturing": 3168.48,
+          "transport": 364.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-045",
+        "product": "P1",
+        "qty": 310,
+        "destination": "Japan",
+        "due": "2026-11-18",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 4,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-11",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 310.0
+        },
+        "landed_cost": 6026.29,
+        "carbon_kg": 2125.98,
+        "cost_breakdown": {
+          "production": 4960.0,
+          "energy": 192.51,
+          "transport": 719.2,
+          "duty": 154.58
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1753.98,
+          "transport": 372.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-046",
+        "product": "P2",
+        "qty": 230,
+        "destination": "Mexico",
+        "due": "2026-11-17",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-12",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 40.0,
+          "4": 190.0
+        },
+        "landed_cost": 8585.9,
+        "carbon_kg": 427.8,
+        "cost_breakdown": {
+          "production": 7728.0,
+          "energy": 144.9,
+          "transport": 713.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 82.8,
+          "transport": 345.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-047",
+        "product": "P1",
+        "qty": 260,
+        "destination": "France",
+        "due": "2026-11-15",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-10",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 90.0,
+          "3": 170.0
+        },
+        "landed_cost": 6255.18,
+        "carbon_kg": 361.4,
+        "cost_breakdown": {
+          "production": 5460.0,
+          "energy": 109.2,
+          "transport": 574.6,
+          "duty": 111.38
+        },
+        "carbon_breakdown": {
+          "manufacturing": 62.4,
+          "transport": 299.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-048",
+        "product": "P6",
+        "qty": 240,
+        "destination": "UAE",
+        "due": "2026-11-04",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [
+          "LATE"
+        ],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-24",
+        "on_time": false,
+        "late_days": 20,
+        "production_by_week": {
+          "4": 240.0
+        },
+        "landed_cost": 20877.72,
+        "carbon_kg": 532.8,
+        "cost_breakdown": {
+          "production": 18900.0,
+          "energy": 302.4,
+          "transport": 715.2,
+          "duty": 960.12
+        },
+        "carbon_breakdown": {
+          "manufacturing": 172.8,
+          "transport": 360.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-049",
+        "product": "P2",
+        "qty": 220,
+        "destination": "China",
+        "due": "2026-11-03",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-01",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 80.0,
+          "2": 140.0
+        },
+        "landed_cost": 6508.21,
+        "carbon_kg": 2098.14,
+        "cost_breakdown": {
+          "production": 5632.0,
+          "energy": 204.93,
+          "transport": 437.8,
+          "duty": 233.48
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1867.14,
+          "transport": 231.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-050",
+        "product": "P1",
+        "qty": 170,
+        "destination": "Japan",
+        "due": "2026-12-04",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-22",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 170.0
+        },
+        "landed_cost": 4256.26,
+        "carbon_kg": 278.8,
+        "cost_breakdown": {
+          "production": 3570.0,
+          "energy": 71.4,
+          "transport": 469.2,
+          "duty": 145.66
+        },
+        "carbon_breakdown": {
+          "manufacturing": 40.8,
+          "transport": 238.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-051",
+        "product": "P4",
+        "qty": 160,
+        "destination": "Germany",
+        "due": "2026-11-08",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 4,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-10-25",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 160.0
+        },
+        "landed_cost": 11443.2,
+        "carbon_kg": 878.0,
+        "cost_breakdown": {
+          "production": 10560.0,
+          "energy": 547.2,
+          "transport": 336.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 798.0,
+          "transport": 80.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-052",
+        "product": "P1",
+        "qty": 160,
+        "destination": "UAE",
+        "due": "2026-11-06",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-10-28",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 160.0
+        },
+        "landed_cost": 3195.14,
+        "carbon_kg": 1105.28,
+        "cost_breakdown": {
+          "production": 2560.0,
+          "energy": 99.36,
+          "transport": 456.0,
+          "duty": 79.78
+        },
+        "carbon_breakdown": {
+          "manufacturing": 905.28,
+          "transport": 200.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-053",
+        "product": "P1",
+        "qty": 310,
+        "destination": "South Africa",
+        "due": "2026-11-12",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-31",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 310.0
+        },
+        "landed_cost": 6386.21,
+        "carbon_kg": 2172.48,
+        "cost_breakdown": {
+          "production": 4960.0,
+          "energy": 192.51,
+          "transport": 821.5,
+          "duty": 412.2
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1753.98,
+          "transport": 418.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-054",
+        "product": "P2",
+        "qty": 160,
+        "destination": "Japan",
+        "due": "2026-11-18",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 4,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-11",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 160.0
+        },
+        "landed_cost": 4743.59,
+        "carbon_kg": 1549.92,
+        "cost_breakdown": {
+          "production": 4096.0,
+          "energy": 149.04,
+          "transport": 371.2,
+          "duty": 127.35
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1357.92,
+          "transport": 192.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-055",
+        "product": "P2",
+        "qty": 310,
+        "destination": "UAE",
+        "due": "2026-11-22",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-11",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 310.0
+        },
+        "landed_cost": 9355.01,
+        "carbon_kg": 3018.47,
+        "cost_breakdown": {
+          "production": 7936.0,
+          "energy": 288.76,
+          "transport": 883.5,
+          "duty": 246.74
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2630.97,
+          "transport": 387.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-056",
+        "product": "P3",
+        "qty": 170,
+        "destination": "South Africa",
+        "due": "2026-11-09",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-07",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 70.0,
+          "2": 100.0
+        },
+        "landed_cost": 7288.13,
+        "carbon_kg": 2153.22,
+        "cost_breakdown": {
+          "production": 6120.0,
+          "energy": 211.14,
+          "transport": 450.5,
+          "duty": 506.49
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1923.72,
+          "transport": 229.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-057",
+        "product": "P2",
+        "qty": 140,
+        "destination": "UK",
+        "due": "2026-12-03",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 6,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-20",
+        "arrival": "2026-11-30",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "6": 140.0
+        },
+        "landed_cost": 5182.04,
+        "carbon_kg": 204.4,
+        "cost_breakdown": {
+          "production": 4704.0,
+          "energy": 88.2,
+          "transport": 294.0,
+          "duty": 95.84
+        },
+        "carbon_breakdown": {
+          "manufacturing": 50.4,
+          "transport": 154.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-058",
+        "product": "P4",
+        "qty": 300,
+        "destination": "Germany",
+        "due": "2026-10-21",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 1,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-18",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 300.0
+        },
+        "landed_cost": 21456.0,
+        "carbon_kg": 1646.25,
+        "cost_breakdown": {
+          "production": 19800.0,
+          "energy": 1026.0,
+          "transport": 630.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1496.25,
+          "transport": 150.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-059",
+        "product": "P3",
+        "qty": 260,
+        "destination": "Germany",
+        "due": "2026-11-24",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-15",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 260.0
+        },
+        "landed_cost": 14127.36,
+        "carbon_kg": 1167.4,
+        "cost_breakdown": {
+          "production": 12870.0,
+          "energy": 711.36,
+          "transport": 546.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1037.4,
+          "transport": 130.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-060",
+        "product": "P2",
+        "qty": 250,
+        "destination": "UK",
+        "due": "2026-11-09",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 1,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-11-09",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 250.0
+        },
+        "landed_cost": 7874.52,
+        "carbon_kg": 2571.75,
+        "cost_breakdown": {
+          "production": 6400.0,
+          "energy": 232.87,
+          "transport": 910.0,
+          "duty": 331.64
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2121.75,
+          "transport": 450.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-061",
+        "product": "P4",
+        "qty": 280,
+        "destination": "Brazil",
+        "due": "2026-11-04",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 1,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-11-03",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 280.0
+        },
+        "landed_cost": 22993.26,
+        "carbon_kg": 1816.5,
+        "cost_breakdown": {
+          "production": 18480.0,
+          "energy": 957.6,
+          "transport": 834.4,
+          "duty": 2721.26
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1396.5,
+          "transport": 420.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-062",
+        "product": "P5",
+        "qty": 170,
+        "destination": "India",
+        "due": "2026-10-27",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-18",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 170.0
+        },
+        "landed_cost": 4305.76,
+        "carbon_kg": 1367.48,
+        "cost_breakdown": {
+          "production": 3808.0,
+          "energy": 140.76,
+          "transport": 357.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1282.48,
+          "transport": 85.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-063",
+        "product": "P4",
+        "qty": 250,
+        "destination": "South Africa",
+        "due": "2026-11-23",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-21",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 210.0,
+          "4": 40.0
+        },
+        "landed_cost": 14041.67,
+        "carbon_kg": 3873.75,
+        "cost_breakdown": {
+          "production": 12000.0,
+          "energy": 388.12,
+          "transport": 662.5,
+          "duty": 991.05
+        },
+        "carbon_breakdown": {
+          "manufacturing": 3536.25,
+          "transport": 337.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-064",
+        "product": "P2",
+        "qty": 320,
+        "destination": "Brazil",
+        "due": "2026-11-13",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-13",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 100.0,
+          "2": 100.0,
+          "3": 120.0
+        },
+        "landed_cost": 13080.83,
+        "carbon_kg": 531.2,
+        "cost_breakdown": {
+          "production": 10752.0,
+          "energy": 201.6,
+          "transport": 812.8,
+          "duty": 1314.43
+        },
+        "carbon_breakdown": {
+          "manufacturing": 115.2,
+          "transport": 416.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-065",
+        "product": "P4",
+        "qty": 300,
+        "destination": "UAE",
+        "due": "2026-11-10",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-04",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 300.0
+        },
+        "landed_cost": 16166.72,
+        "carbon_kg": 4618.5,
+        "cost_breakdown": {
+          "production": 14400.0,
+          "energy": 465.75,
+          "transport": 855.0,
+          "duty": 445.97
+        },
+        "carbon_breakdown": {
+          "manufacturing": 4243.5,
+          "transport": 375.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-066",
+        "product": "P5",
+        "qty": 260,
+        "destination": "Mexico",
+        "due": "2026-12-05",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 7,
+        "finish_by_week": 7,
+        "ship_date": "2026-11-27",
+        "arrival": "2026-12-03",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "6": 15.0,
+          "7": 245.0
+        },
+        "landed_cost": 8595.6,
+        "carbon_kg": 473.2,
+        "cost_breakdown": {
+          "production": 7644.0,
+          "energy": 145.6,
+          "transport": 806.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 83.2,
+          "transport": 390.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-067",
+        "product": "P3",
+        "qty": 230,
+        "destination": "UAE",
+        "due": "2026-11-13",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-02",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 230.0
+        },
+        "landed_cost": 13097.99,
+        "carbon_kg": 1170.7,
+        "cost_breakdown": {
+          "production": 11385.0,
+          "energy": 629.28,
+          "transport": 483.0,
+          "duty": 600.71
+        },
+        "carbon_breakdown": {
+          "manufacturing": 917.7,
+          "transport": 253.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-068",
+        "product": "P3",
+        "qty": 150,
+        "destination": "India",
+        "due": "2026-12-05",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-27",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 150.0
+        },
+        "landed_cost": 9391.71,
+        "carbon_kg": 793.5,
+        "cost_breakdown": {
+          "production": 7425.0,
+          "energy": 410.4,
+          "transport": 381.0,
+          "duty": 1175.31
+        },
+        "carbon_breakdown": {
+          "manufacturing": 598.5,
+          "transport": 195.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-069",
+        "product": "P5",
+        "qty": 290,
+        "destination": "USA",
+        "due": "2026-10-21",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [
+          "LATE"
+        ],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-16",
+        "on_time": false,
+        "late_days": 26,
+        "production_by_week": {
+          "4": 135.0,
+          "5": 155.0
+        },
+        "landed_cost": 9369.9,
+        "carbon_kg": 310.3,
+        "cost_breakdown": {
+          "production": 8526.0,
+          "energy": 162.4,
+          "transport": 681.5,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 92.8,
+          "transport": 217.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-070",
+        "product": "P5",
+        "qty": 270,
+        "destination": "France",
+        "due": "2026-11-23",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-21",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 270.0
+        },
+        "landed_cost": 7571.25,
+        "carbon_kg": 2495.88,
+        "cost_breakdown": {
+          "production": 6048.0,
+          "energy": 223.56,
+          "transport": 923.4,
+          "duty": 376.29
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2036.88,
+          "transport": 459.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-071",
+        "product": "P1",
+        "qty": 260,
+        "destination": "USA",
+        "due": "2026-11-20",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-16",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 130.0,
+          "5": 130.0
+        },
+        "landed_cost": 6180.2,
+        "carbon_kg": 257.4,
+        "cost_breakdown": {
+          "production": 5460.0,
+          "energy": 109.2,
+          "transport": 611.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 62.4,
+          "transport": 195.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-072",
+        "product": "P3",
+        "qty": 210,
+        "destination": "UAE",
+        "due": "2026-11-13",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-11",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 100.0,
+          "4": 110.0
+        },
+        "landed_cost": 8653.94,
+        "carbon_kg": 2638.86,
+        "cost_breakdown": {
+          "production": 7560.0,
+          "energy": 260.82,
+          "transport": 598.5,
+          "duty": 234.62
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2376.36,
+          "transport": 262.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-073",
+        "product": "P6",
+        "qty": 180,
+        "destination": "USA",
+        "due": "2026-10-31",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [
+          "LATE"
+        ],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-16",
+        "on_time": false,
+        "late_days": 16,
+        "production_by_week": {
+          "4": 110.0,
+          "5": 70.0
+        },
+        "landed_cost": 14824.8,
+        "carbon_kg": 264.6,
+        "cost_breakdown": {
+          "production": 14175.0,
+          "energy": 226.8,
+          "transport": 423.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 129.6,
+          "transport": 135.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-074",
+        "product": "P5",
+        "qty": 210,
+        "destination": "France",
+        "due": "2026-11-15",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-14",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 70.0,
+          "2": 140.0
+        },
+        "landed_cost": 5888.75,
+        "carbon_kg": 1941.24,
+        "cost_breakdown": {
+          "production": 4704.0,
+          "energy": 173.88,
+          "transport": 718.2,
+          "duty": 292.67
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1584.24,
+          "transport": 357.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-075",
+        "product": "P2",
+        "qty": 260,
+        "destination": "China",
+        "due": "2026-11-24",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-15",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 260.0
+        },
+        "landed_cost": 7691.52,
+        "carbon_kg": 2479.62,
+        "cost_breakdown": {
+          "production": 6656.0,
+          "energy": 242.19,
+          "transport": 517.4,
+          "duty": 275.93
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2206.62,
+          "transport": 273.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-076",
+        "product": "P4",
+        "qty": 160,
+        "destination": "Japan",
+        "due": "2026-11-06",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-04",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 80.0,
+          "2": 80.0
+        },
+        "landed_cost": 8537.45,
+        "carbon_kg": 2455.2,
+        "cost_breakdown": {
+          "production": 7680.0,
+          "energy": 248.4,
+          "transport": 371.2,
+          "duty": 237.85
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2263.2,
+          "transport": 192.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-077",
+        "product": "P5",
+        "qty": 500,
+        "destination": "Germany",
+        "due": "2026-11-04",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [
+          "LATE"
+        ],
+        "completion_week": 6,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-20",
+        "arrival": "2026-12-01",
+        "on_time": false,
+        "late_days": 27,
+        "production_by_week": {
+          "5": 65.0,
+          "6": 435.0
+        },
+        "landed_cost": 16384.6,
+        "carbon_kg": 735.0,
+        "cost_breakdown": {
+          "production": 14700.0,
+          "energy": 280.0,
+          "transport": 1105.0,
+          "duty": 299.6
+        },
+        "carbon_breakdown": {
+          "manufacturing": 160.0,
+          "transport": 575.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-078",
+        "product": "P6",
+        "qty": 230,
+        "destination": "Mexico",
+        "due": "2026-10-30",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-10-29",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 150.0,
+          "2": 80.0
+        },
+        "landed_cost": 19115.3,
+        "carbon_kg": 510.6,
+        "cost_breakdown": {
+          "production": 18112.5,
+          "energy": 289.8,
+          "transport": 713.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 165.6,
+          "transport": 345.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-079",
+        "product": "P1",
+        "qty": 310,
+        "destination": "France",
+        "due": "2026-11-12",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 4,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-10-26",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 310.0
+        },
+        "landed_cost": 7972.58,
+        "carbon_kg": 850.95,
+        "cost_breakdown": {
+          "production": 6820.0,
+          "energy": 424.08,
+          "transport": 728.5,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 618.45,
+          "transport": 232.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-080",
+        "product": "P4",
+        "qty": 210,
+        "destination": "Mexico",
+        "due": "2026-11-24",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [
+          "LATE"
+        ],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-29",
+        "on_time": false,
+        "late_days": 5,
+        "production_by_week": {
+          "5": 210.0
+        },
+        "landed_cost": 15740.93,
+        "carbon_kg": 1341.375,
+        "cost_breakdown": {
+          "production": 13860.0,
+          "energy": 718.2,
+          "transport": 579.6,
+          "duty": 583.13
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1047.375,
+          "transport": 294.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-081",
+        "product": "P3",
+        "qty": 270,
+        "destination": "Brazil",
+        "due": "2026-11-10",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-11-03",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 270.0
+        },
+        "landed_cost": 16882.84,
+        "carbon_kg": 1482.3,
+        "cost_breakdown": {
+          "production": 13365.0,
+          "energy": 738.72,
+          "transport": 804.6,
+          "duty": 1974.52
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1077.3,
+          "transport": 405.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-082",
+        "product": "P4",
+        "qty": 130,
+        "destination": "South Africa",
+        "due": "2026-11-11",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-07",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 130.0
+        },
+        "landed_cost": 7301.67,
+        "carbon_kg": 2014.35,
+        "cost_breakdown": {
+          "production": 6240.0,
+          "energy": 201.82,
+          "transport": 344.5,
+          "duty": 515.35
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1838.85,
+          "transport": 175.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-083",
+        "product": "P3",
+        "qty": 140,
+        "destination": "South Africa",
+        "due": "2026-11-24",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-12",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 87.5,
+          "2": 52.5
+        },
+        "landed_cost": 7651.88,
+        "carbon_kg": 291.2,
+        "cost_breakdown": {
+          "production": 6615.0,
+          "energy": 117.6,
+          "transport": 448.0,
+          "duty": 471.28
+        },
+        "carbon_breakdown": {
+          "manufacturing": 67.2,
+          "transport": 224.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-084",
+        "product": "P1",
+        "qty": 240,
+        "destination": "USA",
+        "due": "2026-11-25",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 6,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-20",
+        "arrival": "2026-11-23",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "6": 240.0
+        },
+        "landed_cost": 5704.8,
+        "carbon_kg": 237.6,
+        "cost_breakdown": {
+          "production": 5040.0,
+          "energy": 100.8,
+          "transport": 564.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 57.6,
+          "transport": 180.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-085",
+        "product": "P1",
+        "qty": 320,
+        "destination": "China",
+        "due": "2026-11-12",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-08",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 20.0,
+          "3": 300.0
+        },
+        "landed_cost": 6168.27,
+        "carbon_kg": 2146.56,
+        "cost_breakdown": {
+          "production": 5120.0,
+          "energy": 198.72,
+          "transport": 636.8,
+          "duty": 212.75
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1810.56,
+          "transport": 336.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-086",
+        "product": "P5",
+        "qty": 290,
+        "destination": "UK",
+        "due": "2026-11-18",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-16",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 290.0
+        },
+        "landed_cost": 8128.53,
+        "carbon_kg": 2709.76,
+        "cost_breakdown": {
+          "production": 6496.0,
+          "energy": 240.12,
+          "transport": 1055.6,
+          "duty": 336.81
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2187.76,
+          "transport": 522.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-087",
+        "product": "P2",
+        "qty": 320,
+        "destination": "UAE",
+        "due": "2026-11-08",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-04",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 320.0
+        },
+        "landed_cost": 9656.78,
+        "carbon_kg": 3115.84,
+        "cost_breakdown": {
+          "production": 8192.0,
+          "energy": 298.08,
+          "transport": 912.0,
+          "duty": 254.7
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2715.84,
+          "transport": 400.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-088",
+        "product": "P3",
+        "qty": 290,
+        "destination": "Australia",
+        "due": "2026-11-08",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-06",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 290.0
+        },
+        "landed_cost": 11752.78,
+        "carbon_kg": 3658.64,
+        "cost_breakdown": {
+          "production": 10440.0,
+          "energy": 360.18,
+          "transport": 736.6,
+          "duty": 216.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 3281.64,
+          "transport": 377.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-089",
+        "product": "P1",
+        "qty": 320,
+        "destination": "Japan",
+        "due": "2026-12-05",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-18",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 320.0
+        },
+        "landed_cost": 6220.68,
+        "carbon_kg": 2194.56,
+        "cost_breakdown": {
+          "production": 5120.0,
+          "energy": 198.72,
+          "transport": 742.4,
+          "duty": 159.56
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1810.56,
+          "transport": 384.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-090",
+        "product": "P4",
+        "qty": 180,
+        "destination": "India",
+        "due": "2026-11-21",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-08",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 180.0
+        },
+        "landed_cost": 9297.45,
+        "carbon_kg": 2636.1,
+        "cost_breakdown": {
+          "production": 8640.0,
+          "energy": 279.45,
+          "transport": 378.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2546.1,
+          "transport": 90.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-091",
+        "product": "P5",
+        "qty": 160,
+        "destination": "Japan",
+        "due": "2026-11-15",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-11",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 160.0
+        },
+        "landed_cost": 4199.17,
+        "carbon_kg": 1399.04,
+        "cost_breakdown": {
+          "production": 3584.0,
+          "energy": 132.48,
+          "transport": 371.2,
+          "duty": 111.49
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1207.04,
+          "transport": 192.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-092",
+        "product": "P2",
+        "qty": 140,
+        "destination": "Australia",
+        "due": "2026-11-28",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-20",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 140.0
+        },
+        "landed_cost": 4144.3,
+        "carbon_kg": 1370.18,
+        "cost_breakdown": {
+          "production": 3584.0,
+          "energy": 130.41,
+          "transport": 355.6,
+          "duty": 74.29
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1188.18,
+          "transport": 182.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-093",
+        "product": "P5",
+        "qty": 140,
+        "destination": "China",
+        "due": "2026-11-10",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-08",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 140.0
+        },
+        "landed_cost": 3660.6,
+        "carbon_kg": 1203.16,
+        "cost_breakdown": {
+          "production": 3136.0,
+          "energy": 115.92,
+          "transport": 278.6,
+          "duty": 130.08
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1056.16,
+          "transport": 147.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-094",
+        "product": "P3",
+        "qty": 140,
+        "destination": "Mexico",
+        "due": "2026-11-16",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 4,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-05",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 140.0
+        },
+        "landed_cost": 7166.6,
+        "carbon_kg": 277.2,
+        "cost_breakdown": {
+          "production": 6615.0,
+          "energy": 117.6,
+          "transport": 434.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 67.2,
+          "transport": 210.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-095",
+        "product": "P4",
+        "qty": 250,
+        "destination": "France",
+        "due": "2026-10-28",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [
+          "LATE"
+        ],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-16",
+        "on_time": false,
+        "late_days": 19,
+        "production_by_week": {
+          "5": 250.0
+        },
+        "landed_cost": 17942.5,
+        "carbon_kg": 1434.375,
+        "cost_breakdown": {
+          "production": 16500.0,
+          "energy": 855.0,
+          "transport": 587.5,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1246.875,
+          "transport": 187.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-096",
+        "product": "P2",
+        "qty": 320,
+        "destination": "UAE",
+        "due": "2026-11-19",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-11",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 320.0
+        },
+        "landed_cost": 9656.78,
+        "carbon_kg": 3115.84,
+        "cost_breakdown": {
+          "production": 8192.0,
+          "energy": 298.08,
+          "transport": 912.0,
+          "duty": 254.7
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2715.84,
+          "transport": 400.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-097",
+        "product": "P1",
+        "qty": 320,
+        "destination": "Japan",
+        "due": "2026-11-05",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-28",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 320.0
+        },
+        "landed_cost": 6220.68,
+        "carbon_kg": 2194.56,
+        "cost_breakdown": {
+          "production": 5120.0,
+          "energy": 198.72,
+          "transport": 742.4,
+          "duty": 159.56
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1810.56,
+          "transport": 384.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-098",
+        "product": "P2",
+        "qty": 300,
+        "destination": "UK",
+        "due": "2026-11-21",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-17",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 300.0
+        },
+        "landed_cost": 12290.87,
+        "carbon_kg": 1197.75,
+        "cost_breakdown": {
+          "production": 10560.0,
+          "energy": 615.6,
+          "transport": 780.0,
+          "duty": 335.27
+        },
+        "carbon_breakdown": {
+          "manufacturing": 897.75,
+          "transport": 300.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-099",
+        "product": "P1",
+        "qty": 190,
+        "destination": "Germany",
+        "due": "2026-11-17",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-15",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 110.0,
+          "5": 80.0
+        },
+        "landed_cost": 4838.92,
+        "carbon_kg": 474.05,
+        "cost_breakdown": {
+          "production": 4180.0,
+          "energy": 259.92,
+          "transport": 399.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 379.05,
+          "transport": 95.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-100",
+        "product": "P2",
+        "qty": 240,
+        "destination": "UAE",
+        "due": "2026-11-05",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-04",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 240.0
+        },
+        "landed_cost": 7242.59,
+        "carbon_kg": 2336.88,
+        "cost_breakdown": {
+          "production": 6144.0,
+          "energy": 223.56,
+          "transport": 684.0,
+          "duty": 191.03
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2036.88,
+          "transport": 300.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-101",
+        "product": "P4",
+        "qty": 190,
+        "destination": "China",
+        "due": "2026-11-03",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-01",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 190.0
+        },
+        "landed_cost": 10169.67,
+        "carbon_kg": 2887.05,
+        "cost_breakdown": {
+          "production": 9120.0,
+          "energy": 294.98,
+          "transport": 378.1,
+          "duty": 376.6
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2687.55,
+          "transport": 199.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-102",
+        "product": "P3",
+        "qty": 280,
+        "destination": "China",
+        "due": "2026-10-28",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 1,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-25",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 280.0
+        },
+        "landed_cost": 11402.07,
+        "carbon_kg": 3462.48,
+        "cost_breakdown": {
+          "production": 10080.0,
+          "energy": 347.76,
+          "transport": 557.2,
+          "duty": 417.11
+        },
+        "carbon_breakdown": {
+          "manufacturing": 3168.48,
+          "transport": 294.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-103",
+        "product": "P1",
+        "qty": 330,
+        "destination": "India",
+        "due": "2026-12-02",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 7,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-08",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 330.0
+        },
+        "landed_cost": 6177.93,
+        "carbon_kg": 2032.14,
+        "cost_breakdown": {
+          "production": 5280.0,
+          "energy": 204.93,
+          "transport": 693.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1867.14,
+          "transport": 165.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-104",
+        "product": "P4",
+        "qty": 250,
+        "destination": "USA",
+        "due": "2026-11-06",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-04",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 120.0,
+          "2": 130.0
+        },
+        "landed_cost": 18802.75,
+        "carbon_kg": 1546.875,
+        "cost_breakdown": {
+          "production": 16500.0,
+          "energy": 855.0,
+          "transport": 580.0,
+          "duty": 867.75
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1246.875,
+          "transport": 300.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-105",
+        "product": "P1",
+        "qty": 250,
+        "destination": "UAE",
+        "due": "2026-11-06",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-04",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 250.0
+        },
+        "landed_cost": 4992.41,
+        "carbon_kg": 1727.0,
+        "cost_breakdown": {
+          "production": 4000.0,
+          "energy": 155.25,
+          "transport": 712.5,
+          "duty": 124.66
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1414.5,
+          "transport": 312.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-106",
+        "product": "P2",
+        "qty": 240,
+        "destination": "Brazil",
+        "due": "2026-11-14",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-13",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 240.0
+        },
+        "landed_cost": 9810.62,
+        "carbon_kg": 398.4,
+        "cost_breakdown": {
+          "production": 8064.0,
+          "energy": 151.2,
+          "transport": 609.6,
+          "duty": 985.82
+        },
+        "carbon_breakdown": {
+          "manufacturing": 86.4,
+          "transport": 312.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-107",
+        "product": "P3",
+        "qty": 240,
+        "destination": "Japan",
+        "due": "2026-11-27",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-18",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 240.0
+        },
+        "landed_cost": 9763.02,
+        "carbon_kg": 3003.84,
+        "cost_breakdown": {
+          "production": 8640.0,
+          "energy": 298.08,
+          "transport": 556.8,
+          "duty": 268.14
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2715.84,
+          "transport": 288.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-108",
+        "product": "P2",
+        "qty": 290,
+        "destination": "Germany",
+        "due": "2026-10-30",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-18",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 290.0
+        },
+        "landed_cost": 11412.08,
+        "carbon_kg": 1012.825,
+        "cost_breakdown": {
+          "production": 10208.0,
+          "energy": 595.08,
+          "transport": 609.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 867.825,
+          "transport": 145.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-109",
+        "product": "P3",
+        "qty": 120,
+        "destination": "Mexico",
+        "due": "2026-11-06",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-05",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 35.0,
+          "3": 85.0
+        },
+        "landed_cost": 6142.8,
+        "carbon_kg": 237.6,
+        "cost_breakdown": {
+          "production": 5670.0,
+          "energy": 100.8,
+          "transport": 372.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 57.6,
+          "transport": 180.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-110",
+        "product": "P1",
+        "qty": 210,
+        "destination": "Mexico",
+        "due": "2026-11-13",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-11-01",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 210.0
+        },
+        "landed_cost": 5683.17,
+        "carbon_kg": 712.95,
+        "cost_breakdown": {
+          "production": 4620.0,
+          "energy": 287.28,
+          "transport": 579.6,
+          "duty": 196.29
+        },
+        "carbon_breakdown": {
+          "manufacturing": 418.95,
+          "transport": 294.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-111",
+        "product": "P1",
+        "qty": 320,
+        "destination": "UK",
+        "due": "2026-11-18",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-17",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 320.0
+        },
+        "landed_cost": 8534.09,
+        "carbon_kg": 958.4,
+        "cost_breakdown": {
+          "production": 7040.0,
+          "energy": 437.76,
+          "transport": 832.0,
+          "duty": 224.33
+        },
+        "carbon_breakdown": {
+          "manufacturing": 638.4,
+          "transport": 320.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-112",
+        "product": "P2",
+        "qty": 350,
+        "destination": "France",
+        "due": "2026-10-30",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-19",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 350.0
+        },
+        "landed_cost": 13860.7,
+        "carbon_kg": 1309.875,
+        "cost_breakdown": {
+          "production": 12320.0,
+          "energy": 718.2,
+          "transport": 822.5,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1047.375,
+          "transport": 262.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-113",
+        "product": "P3",
+        "qty": 140,
+        "destination": "UAE",
+        "due": "2026-11-02",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-02",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 40.0,
+          "2": 100.0
+        },
+        "landed_cost": 7972.69,
+        "carbon_kg": 712.6,
+        "cost_breakdown": {
+          "production": 6930.0,
+          "energy": 383.04,
+          "transport": 294.0,
+          "duty": 365.65
+        },
+        "carbon_breakdown": {
+          "manufacturing": 558.6,
+          "transport": 154.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-114",
+        "product": "P4",
+        "qty": 250,
+        "destination": "Australia",
+        "due": "2026-11-29",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-20",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 250.0
+        },
+        "landed_cost": 13270.89,
+        "carbon_kg": 3861.25,
+        "cost_breakdown": {
+          "production": 12000.0,
+          "energy": 388.12,
+          "transport": 635.0,
+          "duty": 247.76
+        },
+        "carbon_breakdown": {
+          "manufacturing": 3536.25,
+          "transport": 325.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-115",
+        "product": "P3",
+        "qty": 280,
+        "destination": "UAE",
+        "due": "2026-12-01",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-23",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 280.0
+        },
+        "landed_cost": 15945.38,
+        "carbon_kg": 1425.2,
+        "cost_breakdown": {
+          "production": 13860.0,
+          "energy": 766.08,
+          "transport": 588.0,
+          "duty": 731.3
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1117.2,
+          "transport": 308.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-116",
+        "product": "P5",
+        "qty": 200,
+        "destination": "Mexico",
+        "due": "2026-11-14",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-12",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 200.0
+        },
+        "landed_cost": 6612.0,
+        "carbon_kg": 364.0,
+        "cost_breakdown": {
+          "production": 5880.0,
+          "energy": 112.0,
+          "transport": 620.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 64.0,
+          "transport": 300.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-117",
+        "product": "P5",
+        "qty": 210,
+        "destination": "South Africa",
+        "due": "2026-11-01",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 1,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-31",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 210.0
+        },
+        "landed_cost": 5824.61,
+        "carbon_kg": 1867.74,
+        "cost_breakdown": {
+          "production": 4704.0,
+          "energy": 173.88,
+          "transport": 556.5,
+          "duty": 390.23
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1584.24,
+          "transport": 283.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-118",
+        "product": "P6",
+        "qty": 170,
+        "destination": "Australia",
+        "due": "2026-11-22",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-21",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 170.0
+        },
+        "landed_cost": 14727.17,
+        "carbon_kg": 411.4,
+        "cost_breakdown": {
+          "production": 13387.5,
+          "energy": 214.2,
+          "transport": 581.4,
+          "duty": 544.07
+        },
+        "carbon_breakdown": {
+          "manufacturing": 122.4,
+          "transport": 289.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-119",
+        "product": "P3",
+        "qty": 170,
+        "destination": "China",
+        "due": "2026-11-10",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-08",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 170.0
+        },
+        "landed_cost": 6922.69,
+        "carbon_kg": 2102.22,
+        "cost_breakdown": {
+          "production": 6120.0,
+          "energy": 211.14,
+          "transport": 338.3,
+          "duty": 253.25
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1923.72,
+          "transport": 178.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-120",
+        "product": "P5",
+        "qty": 230,
+        "destination": "USA",
+        "due": "2026-11-14",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [
+          "LATE"
+        ],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-16",
+        "on_time": false,
+        "late_days": 2,
+        "production_by_week": {
+          "5": 230.0
+        },
+        "landed_cost": 7431.3,
+        "carbon_kg": 246.1,
+        "cost_breakdown": {
+          "production": 6762.0,
+          "energy": 128.8,
+          "transport": 540.5,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 73.6,
+          "transport": 172.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-121",
+        "product": "P5",
+        "qty": 240,
+        "destination": "Australia",
+        "due": "2026-11-20",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-20",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 240.0
+        },
+        "landed_cost": 6295.81,
+        "carbon_kg": 2122.56,
+        "cost_breakdown": {
+          "production": 5376.0,
+          "energy": 198.72,
+          "transport": 609.6,
+          "duty": 111.49
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1810.56,
+          "transport": 312.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-122",
+        "product": "P1",
+        "qty": 260,
+        "destination": "South Africa",
+        "due": "2026-11-10",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-07",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 170.0,
+          "2": 90.0
+        },
+        "landed_cost": 5356.18,
+        "carbon_kg": 1822.08,
+        "cost_breakdown": {
+          "production": 4160.0,
+          "energy": 161.46,
+          "transport": 689.0,
+          "duty": 345.72
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1471.08,
+          "transport": 351.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-123",
+        "product": "P1",
+        "qty": 300,
+        "destination": "UAE",
+        "due": "2026-11-25",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-23",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 300.0
+        },
+        "landed_cost": 7990.92,
+        "carbon_kg": 928.5,
+        "cost_breakdown": {
+          "production": 6600.0,
+          "energy": 410.4,
+          "transport": 630.0,
+          "duty": 350.52
+        },
+        "carbon_breakdown": {
+          "manufacturing": 598.5,
+          "transport": 330.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-124",
+        "product": "P2",
+        "qty": 230,
+        "destination": "Japan",
+        "due": "2026-11-30",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-18",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 230.0
+        },
+        "landed_cost": 6818.91,
+        "carbon_kg": 2228.01,
+        "cost_breakdown": {
+          "production": 5888.0,
+          "energy": 214.24,
+          "transport": 533.6,
+          "duty": 183.07
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1952.01,
+          "transport": 276.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-125",
+        "product": "P2",
+        "qty": 250,
+        "destination": "China",
+        "due": "2026-11-16",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 4,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-08",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 250.0
+        },
+        "landed_cost": 7395.69,
+        "carbon_kg": 2384.25,
+        "cost_breakdown": {
+          "production": 6400.0,
+          "energy": 232.87,
+          "transport": 497.5,
+          "duty": 265.31
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2121.75,
+          "transport": 262.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-126",
+        "product": "P6",
+        "qty": 190,
+        "destination": "Japan",
+        "due": "2026-11-19",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [
+          "LATE"
+        ],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-29",
+        "on_time": false,
+        "late_days": 10,
+        "production_by_week": {
+          "5": 190.0
+        },
+        "landed_cost": 16334.38,
+        "carbon_kg": 402.8,
+        "cost_breakdown": {
+          "production": 14962.5,
+          "energy": 239.4,
+          "transport": 524.4,
+          "duty": 608.08
+        },
+        "carbon_breakdown": {
+          "manufacturing": 136.8,
+          "transport": 266.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-127",
+        "product": "P1",
+        "qty": 260,
+        "destination": "Germany",
+        "due": "2026-11-20",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-15",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 260.0
+        },
+        "landed_cost": 6621.68,
+        "carbon_kg": 648.7,
+        "cost_breakdown": {
+          "production": 5720.0,
+          "energy": 355.68,
+          "transport": 546.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 518.7,
+          "transport": 130.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-128",
+        "product": "P2",
+        "qty": 220,
+        "destination": "India",
+        "due": "2026-12-08",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 6,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-20",
+        "arrival": "2026-12-04",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 10.0,
+          "6": 210.0
+        },
+        "landed_cost": 9983.56,
+        "carbon_kg": 944.35,
+        "cost_breakdown": {
+          "production": 7744.0,
+          "energy": 451.44,
+          "transport": 558.8,
+          "duty": 1229.32
+        },
+        "carbon_breakdown": {
+          "manufacturing": 658.35,
+          "transport": 286.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-129",
+        "product": "P2",
+        "qty": 300,
+        "destination": "South Africa",
+        "due": "2026-11-13",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-11-07",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 300.0
+        },
+        "landed_cost": 9391.21,
+        "carbon_kg": 2951.1,
+        "cost_breakdown": {
+          "production": 7680.0,
+          "energy": 279.45,
+          "transport": 795.0,
+          "duty": 636.76
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2546.1,
+          "transport": 405.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-130",
+        "product": "P2",
+        "qty": 240,
+        "destination": "USA",
+        "due": "2026-12-08",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 7,
+        "finish_by_week": 8,
+        "ship_date": "2026-11-27",
+        "arrival": "2026-11-30",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "7": 240.0
+        },
+        "landed_cost": 8779.2,
+        "carbon_kg": 266.4,
+        "cost_breakdown": {
+          "production": 8064.0,
+          "energy": 151.2,
+          "transport": 564.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 86.4,
+          "transport": 180.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-131",
+        "product": "P1",
+        "qty": 300,
+        "destination": "USA",
+        "due": "2026-11-04",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-02",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 300.0
+        },
+        "landed_cost": 7131.0,
+        "carbon_kg": 297.0,
+        "cost_breakdown": {
+          "production": 6300.0,
+          "energy": 126.0,
+          "transport": 705.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 72.0,
+          "transport": 225.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-132",
+        "product": "P2",
+        "qty": 280,
+        "destination": "India",
+        "due": "2026-12-05",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 6,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-20",
+        "arrival": "2026-12-04",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "6": 280.0
+        },
+        "landed_cost": 12706.34,
+        "carbon_kg": 1201.9,
+        "cost_breakdown": {
+          "production": 9856.0,
+          "energy": 574.56,
+          "transport": 711.2,
+          "duty": 1564.58
+        },
+        "carbon_breakdown": {
+          "manufacturing": 837.9,
+          "transport": 364.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-133",
+        "product": "P2",
+        "qty": 180,
+        "destination": "USA",
+        "due": "2026-11-15",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-09",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 180.0
+        },
+        "landed_cost": 6584.4,
+        "carbon_kg": 199.8,
+        "cost_breakdown": {
+          "production": 6048.0,
+          "energy": 113.4,
+          "transport": 423.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 64.8,
+          "transport": 135.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-134",
+        "product": "P1",
+        "qty": 260,
+        "destination": "Germany",
+        "due": "2026-10-25",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 1,
+        "finish_by_week": 2,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-10-18",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "1": 260.0
+        },
+        "landed_cost": 6621.68,
+        "carbon_kg": 648.7,
+        "cost_breakdown": {
+          "production": 5720.0,
+          "energy": 355.68,
+          "transport": 546.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 518.7,
+          "transport": 130.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-135",
+        "product": "P1",
+        "qty": 230,
+        "destination": "China",
+        "due": "2026-12-02",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-15",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 230.0
+        },
+        "landed_cost": 4433.44,
+        "carbon_kg": 1542.84,
+        "cost_breakdown": {
+          "production": 3680.0,
+          "energy": 142.83,
+          "transport": 457.7,
+          "duty": 152.91
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1301.34,
+          "transport": 241.5
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-136",
+        "product": "P2",
+        "qty": 310,
+        "destination": "UK",
+        "due": "2026-11-13",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 4,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-10-27",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 310.0
+        },
+        "landed_cost": 12700.56,
+        "carbon_kg": 1237.675,
+        "cost_breakdown": {
+          "production": 10912.0,
+          "energy": 636.12,
+          "transport": 806.0,
+          "duty": 346.44
+        },
+        "carbon_breakdown": {
+          "manufacturing": 927.675,
+          "transport": 310.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-137",
+        "product": "P3",
+        "qty": 230,
+        "destination": "Germany",
+        "due": "2026-11-01",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 2,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-23",
+        "arrival": "2026-10-25",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "2": 230.0
+        },
+        "landed_cost": 12497.28,
+        "carbon_kg": 1032.7,
+        "cost_breakdown": {
+          "production": 11385.0,
+          "energy": 629.28,
+          "transport": 483.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 917.7,
+          "transport": 115.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-138",
+        "product": "P5",
+        "qty": 300,
+        "destination": "Australia",
+        "due": "2026-11-21",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-20",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "4": 300.0
+        },
+        "landed_cost": 7869.77,
+        "carbon_kg": 2653.2,
+        "cost_breakdown": {
+          "production": 6720.0,
+          "energy": 248.4,
+          "transport": 762.0,
+          "duty": 139.37
+        },
+        "carbon_breakdown": {
+          "manufacturing": 2263.2,
+          "transport": 390.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-139",
+        "product": "P2",
+        "qty": 260,
+        "destination": "Brazil",
+        "due": "2026-12-08",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 6,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-20",
+        "arrival": "2026-12-04",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "6": 260.0
+        },
+        "landed_cost": 10628.18,
+        "carbon_kg": 431.6,
+        "cost_breakdown": {
+          "production": 8736.0,
+          "energy": 163.8,
+          "transport": 660.4,
+          "duty": 1067.98
+        },
+        "carbon_breakdown": {
+          "manufacturing": 93.6,
+          "transport": 338.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-140",
+        "product": "P1",
+        "qty": 300,
+        "destination": "USA",
+        "due": "2026-11-20",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-16",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 300.0
+        },
+        "landed_cost": 7131.0,
+        "carbon_kg": 297.0,
+        "cost_breakdown": {
+          "production": 6300.0,
+          "energy": 126.0,
+          "transport": 705.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 72.0,
+          "transport": 225.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-141",
+        "product": "P1",
+        "qty": 230,
+        "destination": "Mexico",
+        "due": "2026-11-16",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 4,
+        "finish_by_week": 4,
+        "ship_date": "2026-11-06",
+        "arrival": "2026-11-12",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 30.0,
+          "4": 200.0
+        },
+        "landed_cost": 5639.6,
+        "carbon_kg": 400.2,
+        "cost_breakdown": {
+          "production": 4830.0,
+          "energy": 96.6,
+          "transport": 713.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 55.2,
+          "transport": 345.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-142",
+        "product": "P4",
+        "qty": 290,
+        "destination": "India",
+        "due": "2026-11-03",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-01",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 290.0
+        },
+        "landed_cost": 14979.23,
+        "carbon_kg": 4247.05,
+        "cost_breakdown": {
+          "production": 13920.0,
+          "energy": 450.23,
+          "transport": 609.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 4102.05,
+          "transport": 145.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-143",
+        "product": "P3",
+        "qty": 300,
+        "destination": "Brazil",
+        "due": "2026-11-27",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-11-27",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 300.0
+        },
+        "landed_cost": 16920.24,
+        "carbon_kg": 534.0,
+        "cost_breakdown": {
+          "production": 14175.0,
+          "energy": 252.0,
+          "transport": 762.0,
+          "duty": 1731.24
+        },
+        "carbon_breakdown": {
+          "manufacturing": 144.0,
+          "transport": 390.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-144",
+        "product": "P1",
+        "qty": 260,
+        "destination": "Germany",
+        "due": "2026-11-28",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [],
+        "completion_week": 6,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-20",
+        "arrival": "2026-11-22",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "5": 40.0,
+          "6": 220.0
+        },
+        "landed_cost": 6621.68,
+        "carbon_kg": 648.7,
+        "cost_breakdown": {
+          "production": 5720.0,
+          "energy": 355.68,
+          "transport": 546.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 518.7,
+          "transport": 130.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-145",
+        "product": "P5",
+        "qty": 300,
+        "destination": "UK",
+        "due": "2026-11-13",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-09",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 300.0
+        },
+        "landed_cost": 9797.76,
+        "carbon_kg": 426.0,
+        "cost_breakdown": {
+          "production": 8820.0,
+          "energy": 168.0,
+          "transport": 630.0,
+          "duty": 179.76
+        },
+        "carbon_breakdown": {
+          "manufacturing": 96.0,
+          "transport": 330.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-146",
+        "product": "P1",
+        "qty": 180,
+        "destination": "Australia",
+        "due": "2026-11-13",
+        "status": "ASSIGNED",
+        "plant": "A",
+        "flags": [],
+        "completion_week": 3,
+        "finish_by_week": 3,
+        "ship_date": "2026-10-30",
+        "arrival": "2026-11-13",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "3": 180.0
+        },
+        "landed_cost": 3508.82,
+        "carbon_kg": 1252.44,
+        "cost_breakdown": {
+          "production": 2880.0,
+          "energy": 111.78,
+          "transport": 457.2,
+          "duty": 59.84
+        },
+        "carbon_breakdown": {
+          "manufacturing": 1018.44,
+          "transport": 234.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-147",
+        "product": "P1",
+        "qty": 210,
+        "destination": "Mexico",
+        "due": "2026-12-08",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [],
+        "completion_week": 7,
+        "finish_by_week": 7,
+        "ship_date": "2026-11-27",
+        "arrival": "2026-12-03",
+        "on_time": true,
+        "late_days": 0,
+        "production_by_week": {
+          "7": 210.0
+        },
+        "landed_cost": 5149.2,
+        "carbon_kg": 365.4,
+        "cost_breakdown": {
+          "production": 4410.0,
+          "energy": 88.2,
+          "transport": 651.0,
+          "duty": 0.0
+        },
+        "carbon_breakdown": {
+          "manufacturing": 50.4,
+          "transport": 315.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-148",
+        "product": "P6",
+        "qty": 240,
+        "destination": "Brazil",
+        "due": "2026-11-19",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [
+          "LATE"
+        ],
+        "completion_week": 6,
+        "finish_by_week": 6,
+        "ship_date": "2026-11-20",
+        "arrival": "2026-12-04",
+        "on_time": false,
+        "late_days": 15,
+        "production_by_week": {
+          "5": 100.0,
+          "6": 140.0
+        },
+        "landed_cost": 22116.29,
+        "carbon_kg": 484.8,
+        "cost_breakdown": {
+          "production": 18900.0,
+          "energy": 302.4,
+          "transport": 609.6,
+          "duty": 2304.29
+        },
+        "carbon_breakdown": {
+          "manufacturing": 172.8,
+          "transport": 312.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-149",
+        "product": "P3",
+        "qty": 200,
+        "destination": "Brazil",
+        "due": "2026-10-22",
+        "status": "ASSIGNED",
+        "plant": "B",
+        "flags": [
+          "LATE"
+        ],
+        "completion_week": 1,
+        "finish_by_week": 1,
+        "ship_date": "2026-10-16",
+        "arrival": "2026-11-03",
+        "on_time": false,
+        "late_days": 12,
+        "production_by_week": {
+          "1": 200.0
+        },
+        "landed_cost": 12505.81,
+        "carbon_kg": 1098.0,
+        "cost_breakdown": {
+          "production": 9900.0,
+          "energy": 547.2,
+          "transport": 596.0,
+          "duty": 1462.61
+        },
+        "carbon_breakdown": {
+          "manufacturing": 798.0,
+          "transport": 300.0
+        },
+        "fixed": false
+      },
+      {
+        "order_id": "O-150",
+        "product": "P6",
+        "qty": 240,
+        "destination": "Australia",
+        "due": "2026-11-20",
+        "status": "ASSIGNED",
+        "plant": "C",
+        "flags": [
+          "LATE"
+        ],
+        "completion_week": 5,
+        "finish_by_week": 5,
+        "ship_date": "2026-11-13",
+        "arrival": "2026-12-05",
+        "on_time": false,
+        "late_days": 15,
+        "production_by_week": {
+          "5": 240.0
+        },
+        "landed_cost": 20791.3,
+        "carbon_kg": 580.8,
+        "cost_breakdown": {
+          "production": 18900.0,
+          "energy": 302.4,
+          "transport": 820.8,
+          "duty": 768.1
+        },
+        "carbon_breakdown": {
+          "manufacturing": 172.8,
+          "transport": 408.0
+        },
+        "fixed": false
+      }
+    ],
+    "notifications": [
+      {
+        "order_id": "O-001",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "C",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 3613.3,
+            "carbon_kg": 1241.28,
+            "earliest_arrival": "2026-11-15",
+            "late_days": 15,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "C",
+            "landed_cost": 3923.2,
+            "carbon_kg": 278.4,
+            "earliest_arrival": "2026-10-29",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-001: cheapest plant A arrives 2026-11-15, 15 day(s) after due 2026-10-31. Next best on-time plant C costs +309.90 more (-962.9 kg CO2e). Plan uses C. Choose A (cheaper, late) or C (on time)."
+      },
+      {
+        "order_id": "O-016",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 7236.83,
+            "carbon_kg": 2012.4,
+            "earliest_arrival": "2026-11-15",
+            "late_days": 12,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 9379.36,
+            "carbon_kg": 823.5,
+            "earliest_arrival": "2026-11-03",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-016: cheapest plant A arrives 2026-11-15, 12 day(s) after due 2026-11-03. Next best on-time plant B costs +2,142.53 more (-1,188.9 kg CO2e). Plan uses B. Choose A (cheaper, late) or B (on time)."
+      },
+      {
+        "order_id": "O-020",
+        "type": "LATE_DUE_TO_CAPACITY",
+        "requires_user_choice": false,
+        "planned_plant": "B",
+        "message": "O-020: on-time delivery was possible in isolation but capacity is taken by other orders; arrives 2026-11-29, 3 day(s) late."
+      },
+      {
+        "order_id": "O-021",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 6005.51,
+            "carbon_kg": 1822.24,
+            "earliest_arrival": "2026-11-07",
+            "late_days": 12,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 7607.04,
+            "carbon_kg": 628.6,
+            "earliest_arrival": "2026-10-18",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-021: cheapest plant A arrives 2026-11-07, 12 day(s) after due 2026-10-26. Next best on-time plant B costs +1,601.53 more (-1,193.6 kg CO2e). Plan uses B. Choose A (cheaper, late) or B (on time)."
+      },
+      {
+        "order_id": "O-023",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 3576.5,
+            "carbon_kg": 1250.86,
+            "earliest_arrival": "2026-11-07",
+            "late_days": 4,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "C",
+            "landed_cost": 4089.93,
+            "carbon_kg": 236.3,
+            "earliest_arrival": "2026-11-03",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 4372.06,
+            "carbon_kg": 466.65,
+            "earliest_arrival": "2026-10-19",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "optimiser's choice"
+          }
+        ],
+        "message": "O-023: cheapest plant A arrives 2026-11-07, 4 day(s) after due 2026-11-03. Next best on-time plant C costs +513.43 more (-1,014.6 kg CO2e). Plan uses B. Choose A (cheaper, late) or C (on time)."
+      },
+      {
+        "order_id": "O-031",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 8436.82,
+            "carbon_kg": 2983.2,
+            "earliest_arrival": "2026-11-09",
+            "late_days": 13,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 10667.62,
+            "carbon_kg": 1198.0,
+            "earliest_arrival": "2026-10-20",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-031: cheapest plant A arrives 2026-11-09, 13 day(s) after due 2026-10-27. Next best on-time plant B costs +2,230.80 more (-1,785.2 kg CO2e). Plan uses B. Choose A (cheaper, late) or B (on time)."
+      },
+      {
+        "order_id": "O-042",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "C",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 7164.19,
+            "carbon_kg": 2314.56,
+            "earliest_arrival": "2026-11-15",
+            "late_days": 3,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "C",
+            "landed_cost": 7934.4,
+            "carbon_kg": 436.8,
+            "earliest_arrival": "2026-11-05",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-042: cheapest plant A arrives 2026-11-15, 3 day(s) after due 2026-11-12. Next best on-time plant C costs +770.21 more (-1,877.8 kg CO2e). Plan uses C. Choose A (cheaper, late) or C (on time)."
+      },
+      {
+        "order_id": "O-048",
+        "type": "ALL_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "C",
+        "options": [
+          {
+            "plant": "C",
+            "landed_cost": 20877.72,
+            "carbon_kg": 532.8,
+            "earliest_arrival": "2026-11-10",
+            "late_days": 6,
+            "on_time": false,
+            "producible_in_horizon": true
+          }
+        ],
+        "message": "O-048: every capable plant arrives after due 2026-11-04 (C: 6d late, 20,878). Provisionally assigned to C. Please choose a plant."
+      },
+      {
+        "order_id": "O-058",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 16783.69,
+            "carbon_kg": 4753.5,
+            "earliest_arrival": "2026-11-07",
+            "late_days": 17,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 21456.0,
+            "carbon_kg": 1646.25,
+            "earliest_arrival": "2026-10-18",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-058: cheapest plant A arrives 2026-11-07, 17 day(s) after due 2026-10-21. Next best on-time plant B costs +4,672.31 more (-3,107.2 kg CO2e). Plan uses B. Choose A (cheaper, late) or B (on time)."
+      },
+      {
+        "order_id": "O-061",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 17576.15,
+            "carbon_kg": 4548.6,
+            "earliest_arrival": "2026-11-15",
+            "late_days": 11,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 22993.26,
+            "carbon_kg": 1816.5,
+            "earliest_arrival": "2026-11-03",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-061: cheapest plant A arrives 2026-11-15, 11 day(s) after due 2026-11-04. Next best on-time plant B costs +5,417.11 more (-2,732.1 kg CO2e). Plan uses B. Choose A (cheaper, late) or B (on time)."
+      },
+      {
+        "order_id": "O-064",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "C",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 11394.29,
+            "carbon_kg": 3387.84,
+            "earliest_arrival": "2026-11-15",
+            "late_days": 2,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "C",
+            "landed_cost": 13080.83,
+            "carbon_kg": 531.2,
+            "earliest_arrival": "2026-11-13",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-064: cheapest plant A arrives 2026-11-15, 2 day(s) after due 2026-11-13. Next best on-time plant C costs +1,686.54 more (-2,856.6 kg CO2e). Plan uses C. Choose A (cheaper, late) or C (on time)."
+      },
+      {
+        "order_id": "O-069",
+        "type": "ALL_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "C",
+        "options": [
+          {
+            "plant": "C",
+            "landed_cost": 9369.9,
+            "carbon_kg": 310.3,
+            "earliest_arrival": "2026-11-02",
+            "late_days": 12,
+            "on_time": false,
+            "producible_in_horizon": true
+          },
+          {
+            "plant": "A",
+            "landed_cost": 9603.35,
+            "carbon_kg": 2767.76,
+            "earliest_arrival": "2026-11-13",
+            "late_days": 23,
+            "on_time": false,
+            "producible_in_horizon": true
+          }
+        ],
+        "message": "O-069: every capable plant arrives after due 2026-10-21 (C: 12d late, 9,370, A: 23d late, 9,603). Provisionally assigned to C. Please choose a plant."
+      },
+      {
+        "order_id": "O-073",
+        "type": "LATE_DUE_TO_CAPACITY",
+        "requires_user_choice": false,
+        "planned_plant": "C",
+        "message": "O-073: on-time delivery was possible in isolation but capacity is taken by other orders; arrives 2026-11-16, 16 day(s) late."
+      },
+      {
+        "order_id": "O-077",
+        "type": "ALL_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "C",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 14020.84,
+            "carbon_kg": 4622.0,
+            "earliest_arrival": "2026-11-14",
+            "late_days": 10,
+            "on_time": false,
+            "producible_in_horizon": true
+          },
+          {
+            "plant": "C",
+            "landed_cost": 16384.6,
+            "carbon_kg": 735.0,
+            "earliest_arrival": "2026-11-10",
+            "late_days": 6,
+            "on_time": false,
+            "producible_in_horizon": true
+          }
+        ],
+        "message": "O-077: every capable plant arrives after due 2026-11-04 (A: 10d late, 14,021, C: 6d late, 16,385). Provisionally assigned to C. Please choose a plant."
+      },
+      {
+        "order_id": "O-080",
+        "type": "LATE_DUE_TO_CAPACITY",
+        "requires_user_choice": false,
+        "planned_plant": "B",
+        "message": "O-080: on-time delivery was possible in isolation but capacity is taken by other orders; arrives 2026-11-29, 5 day(s) late."
+      },
+      {
+        "order_id": "O-081",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 13026.3,
+            "carbon_kg": 3622.32,
+            "earliest_arrival": "2026-11-15",
+            "late_days": 5,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 16882.84,
+            "carbon_kg": 1482.3,
+            "earliest_arrival": "2026-11-03",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-081: cheapest plant A arrives 2026-11-15, 5 day(s) after due 2026-11-10. Next best on-time plant B costs +3,856.54 more (-2,140.0 kg CO2e). Plan uses B. Choose A (cheaper, late) or B (on time)."
+      },
+      {
+        "order_id": "O-095",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 13986.41,
+            "carbon_kg": 3961.25,
+            "earliest_arrival": "2026-11-07",
+            "late_days": 10,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 17942.5,
+            "carbon_kg": 1434.38,
+            "earliest_arrival": "2026-10-19",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-095: cheapest plant A arrives 2026-11-07, 10 day(s) after due 2026-10-28. Next best on-time plant B costs +3,956.09 more (-2,526.9 kg CO2e). Plan uses B. Choose A (cheaper, late) or B (on time)."
+      },
+      {
+        "order_id": "O-104",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 16505.16,
+            "carbon_kg": 4036.25,
+            "earliest_arrival": "2026-11-13",
+            "late_days": 7,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 18802.75,
+            "carbon_kg": 1546.88,
+            "earliest_arrival": "2026-10-28",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-104: cheapest plant A arrives 2026-11-13, 7 day(s) after due 2026-11-06. Next best on-time plant B costs +2,297.59 more (-2,489.4 kg CO2e). Plan uses B. Choose A (cheaper, late) or B (on time)."
+      },
+      {
+        "order_id": "O-106",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "C",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 8545.72,
+            "carbon_kg": 2540.88,
+            "earliest_arrival": "2026-11-15",
+            "late_days": 1,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "C",
+            "landed_cost": 9810.62,
+            "carbon_kg": 398.4,
+            "earliest_arrival": "2026-11-13",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-106: cheapest plant A arrives 2026-11-15, 1 day(s) after due 2026-11-14. Next best on-time plant C costs +1,264.90 more (-2,142.5 kg CO2e). Plan uses C. Choose A (cheaper, late) or C (on time)."
+      },
+      {
+        "order_id": "O-108",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 9147.58,
+            "carbon_kg": 2954.23,
+            "earliest_arrival": "2026-11-07",
+            "late_days": 8,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 11412.08,
+            "carbon_kg": 1012.83,
+            "earliest_arrival": "2026-10-18",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-108: cheapest plant A arrives 2026-11-07, 8 day(s) after due 2026-10-30. Next best on-time plant B costs +2,264.50 more (-1,941.4 kg CO2e). Plan uses B. Choose A (cheaper, late) or B (on time)."
+      },
+      {
+        "order_id": "O-109",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "C",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 5431.94,
+            "carbon_kg": 1609.92,
+            "earliest_arrival": "2026-11-15",
+            "late_days": 9,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "C",
+            "landed_cost": 6142.8,
+            "carbon_kg": 237.6,
+            "earliest_arrival": "2026-10-29",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-109: cheapest plant A arrives 2026-11-15, 9 day(s) after due 2026-11-06. Next best on-time plant C costs +710.86 more (-1,372.3 kg CO2e). Plan uses C. Choose A (cheaper, late) or C (on time)."
+      },
+      {
+        "order_id": "O-110",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 4742.45,
+            "carbon_kg": 1629.18,
+            "earliest_arrival": "2026-11-15",
+            "late_days": 2,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "C",
+            "landed_cost": 5149.2,
+            "carbon_kg": 365.4,
+            "earliest_arrival": "2026-10-29",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 5683.17,
+            "carbon_kg": 712.95,
+            "earliest_arrival": "2026-11-01",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "optimiser's choice"
+          }
+        ],
+        "message": "O-110: cheapest plant A arrives 2026-11-15, 2 day(s) after due 2026-11-13. Next best on-time plant C costs +406.75 more (-1,263.8 kg CO2e). Plan uses B. Choose A (cheaper, late) or C (on time)."
+      },
+      {
+        "order_id": "O-112",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 11040.19,
+            "carbon_kg": 3565.45,
+            "earliest_arrival": "2026-11-07",
+            "late_days": 8,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 13860.7,
+            "carbon_kg": 1309.88,
+            "earliest_arrival": "2026-10-19",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-112: cheapest plant A arrives 2026-11-07, 8 day(s) after due 2026-10-30. Next best on-time plant B costs +2,820.51 more (-2,255.6 kg CO2e). Plan uses B. Choose A (cheaper, late) or B (on time)."
+      },
+      {
+        "order_id": "O-116",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "C",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 5970.16,
+            "carbon_kg": 1928.8,
+            "earliest_arrival": "2026-11-15",
+            "late_days": 1,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "C",
+            "landed_cost": 6612.0,
+            "carbon_kg": 364.0,
+            "earliest_arrival": "2026-10-29",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-116: cheapest plant A arrives 2026-11-15, 1 day(s) after due 2026-11-14. Next best on-time plant C costs +641.84 more (-1,564.8 kg CO2e). Plan uses C. Choose A (cheaper, late) or C (on time)."
+      },
+      {
+        "order_id": "O-120",
+        "type": "LATE_DUE_TO_CAPACITY",
+        "requires_user_choice": false,
+        "planned_plant": "C",
+        "message": "O-120: on-time delivery was possible in isolation but capacity is taken by other orders; arrives 2026-11-16, 2 day(s) late."
+      },
+      {
+        "order_id": "O-126",
+        "type": "LATE_DUE_TO_CAPACITY",
+        "requires_user_choice": false,
+        "planned_plant": "C",
+        "message": "O-126: on-time delivery was possible in isolation but capacity is taken by other orders; arrives 2026-11-29, 10 day(s) late."
+      },
+      {
+        "order_id": "O-134",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 5469.95,
+            "carbon_kg": 1913.08,
+            "earliest_arrival": "2026-11-07",
+            "late_days": 13,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 6621.68,
+            "carbon_kg": 648.7,
+            "earliest_arrival": "2026-10-18",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-134: cheapest plant A arrives 2026-11-07, 13 day(s) after due 2026-10-25. Next best on-time plant B costs +1,151.73 more (-1,264.4 kg CO2e). Plan uses B. Choose A (cheaper, late) or B (on time)."
+      },
+      {
+        "order_id": "O-137",
+        "type": "CHEAPEST_IS_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 9866.2,
+            "carbon_kg": 2993.68,
+            "earliest_arrival": "2026-11-07",
+            "late_days": 6,
+            "on_time": false,
+            "producible_in_horizon": true,
+            "label": "cheapest (LATE)"
+          },
+          {
+            "plant": "B",
+            "landed_cost": 12497.28,
+            "carbon_kg": 1032.7,
+            "earliest_arrival": "2026-10-18",
+            "late_days": 0,
+            "on_time": true,
+            "producible_in_horizon": true,
+            "label": "next best on time"
+          }
+        ],
+        "message": "O-137: cheapest plant A arrives 2026-11-07, 6 day(s) after due 2026-11-01. Next best on-time plant B costs +2,631.08 more (-1,961.0 kg CO2e). Plan uses B. Choose A (cheaper, late) or B (on time)."
+      },
+      {
+        "order_id": "O-148",
+        "type": "LATE_DUE_TO_CAPACITY",
+        "requires_user_choice": false,
+        "planned_plant": "C",
+        "message": "O-148: on-time delivery was possible in isolation but capacity is taken by other orders; arrives 2026-12-04, 15 day(s) late."
+      },
+      {
+        "order_id": "O-149",
+        "type": "ALL_LATE",
+        "requires_user_choice": true,
+        "planned_plant": "B",
+        "options": [
+          {
+            "plant": "A",
+            "landed_cost": 9649.11,
+            "carbon_kg": 2683.2,
+            "earliest_arrival": "2026-11-15",
+            "late_days": 24,
+            "on_time": false,
+            "producible_in_horizon": true
+          },
+          {
+            "plant": "C",
+            "landed_cost": 11280.16,
+            "carbon_kg": 356.0,
+            "earliest_arrival": "2026-11-13",
+            "late_days": 22,
+            "on_time": false,
+            "producible_in_horizon": true
+          },
+          {
+            "plant": "B",
+            "landed_cost": 12505.81,
+            "carbon_kg": 1098.0,
+            "earliest_arrival": "2026-11-03",
+            "late_days": 12,
+            "on_time": false,
+            "producible_in_horizon": true
+          }
+        ],
+        "message": "O-149: every capable plant arrives after due 2026-10-22 (A: 24d late, 9,649, C: 22d late, 11,280, B: 12d late, 12,506). Provisionally assigned to B. Please choose a plant."
+      },
+      {
+        "order_id": "O-150",
+        "type": "LATE_DUE_TO_CAPACITY",
+        "requires_user_choice": false,
+        "planned_plant": "C",
+        "message": "O-150: on-time delivery was possible in isolation but capacity is taken by other orders; arrives 2026-12-05, 15 day(s) late."
+      }
+    ],
+    "kpis": {
+      "total_cost": 1435712.98,
+      "total_carbon_kg": 212492.79,
+      "total_carbon_t": 212.493,
+      "cost_breakdown": {
+        "production": 1245770.5,
+        "energy": 44468.56,
+        "transport": 91619.5,
+        "duty": 53854.4
+      },
+      "orders_total": 150,
+      "orders_assigned": 150,
+      "orders_unassigned": 0,
+      "late_orders": 12,
+      "total_late_days": 170,
+      "plant_utilisation": {
+        "A": 0.348,
+        "B": 0.4271,
+        "C": 0.6232
+      },
+      "plant_order_share": {
+        "A": 65,
+        "B": 39,
+        "C": 46
+      },
+      "units_by_plant_product_week": {
+        "A|P1|W1": 800.0,
+        "A|P1|W2": 800.0,
+        "A|P1|W3": 1600.0,
+        "A|P1|W4": 1530.0,
+        "A|P2|W1": 650.0,
+        "A|P2|W2": 650.0,
+        "A|P2|W3": 1300.0,
+        "A|P2|W4": 1280.0,
+        "A|P3|W1": 500.0,
+        "A|P3|W2": 500.0,
+        "A|P3|W3": 1000.0,
+        "A|P3|W4": 350.0,
+        "A|P4|W1": 400.0,
+        "A|P4|W2": 400.0,
+        "A|P4|W3": 800.0,
+        "A|P4|W4": 470.0,
+        "A|P5|W1": 450.0,
+        "A|P5|W2": 450.0,
+        "A|P5|W3": 900.0,
+        "A|P5|W4": 760.0,
+        "B|P1|W1": 1000.0,
+        "B|P1|W2": 700.0,
+        "B|P1|W5": 1000.0,
+        "B|P1|W6": 220.0,
+        "B|P2|W1": 900.0,
+        "B|P2|W2": 630.0,
+        "B|P2|W5": 900.0,
+        "B|P2|W6": 490.0,
+        "B|P3|W1": 800.0,
+        "B|P3|W2": 560.0,
+        "B|P3|W5": 690.0,
+        "B|P4|W1": 700.0,
+        "B|P4|W2": 490.0,
+        "B|P4|W5": 650.0,
+        "C|P1|W1": 125.0,
+        "C|P1|W2": 125.0,
+        "C|P1|W3": 500.0,
+        "C|P1|W4": 500.0,
+        "C|P1|W5": 500.0,
+        "C|P1|W6": 500.0,
+        "C|P1|W7": 440.0,
+        "C|P2|W1": 100.0,
+        "C|P2|W2": 100.0,
+        "C|P2|W3": 400.0,
+        "C|P2|W4": 400.0,
+        "C|P2|W5": 400.0,
+        "C|P2|W6": 400.0,
+        "C|P2|W7": 240.0,
+        "C|P3|W1": 87.5,
+        "C|P3|W2": 87.5,
+        "C|P3|W3": 350.0,
+        "C|P3|W4": 350.0,
+        "C|P3|W5": 350.0,
+        "C|P3|W6": 285.0,
+        "C|P5|W1": 112.5,
+        "C|P5|W2": 112.5,
+        "C|P5|W3": 450.0,
+        "C|P5|W4": 450.0,
+        "C|P5|W5": 450.0,
+        "C|P5|W6": 450.0,
+        "C|P5|W7": 245.0,
+        "C|P6|W1": 150.0,
+        "C|P6|W2": 150.0,
+        "C|P6|W3": 600.0,
+        "C|P6|W4": 600.0,
+        "C|P6|W5": 600.0,
+        "C|P6|W6": 140.0
+      },
+      "weights_used": {
+        "cost": 0.7,
+        "carbon": 0.3
+      },
+      "objective_value": 138.570093
+    },
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "capacity_ok": true,
+      "eligibility_ok": true,
+      "recomputed_total_cost": 1435713.0,
+      "recomputed_total_carbon_kg": 212492.79
+    },
+    "plan_valid": true
+  },
+  "capacity_scenario": {
+    "comparison": {
+      "baseline": {
+        "total_cost": 1528631.6,
+        "total_carbon_t": 162.42,
+        "late_orders": 2,
+        "unassigned": 0
+      },
+      "revised": {
+        "total_cost": 1438433.3,
+        "total_carbon_t": 213.054,
+        "late_orders": 12,
+        "unassigned": 0
+      },
+      "delta": {
+        "cost": -90198.3,
+        "cost_pct": -5.901,
+        "carbon_t": 50.634,
+        "late_orders": 10,
+        "unassigned": 0
+      },
+      "orders_moved": [
+        {
+          "order_id": "O-003",
+          "from_plant": "C",
+          "to_plant": "A",
+          "cost_change": -1278.32,
+          "carbon_change_kg": 1181.55
+        },
+        {
+          "order_id": "O-014",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -6748.13,
+          "carbon_change_kg": 1892.54
+        },
+        {
+          "order_id": "O-015",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -2164.7,
+          "carbon_change_kg": 1672.515
+        },
+        {
+          "order_id": "O-022",
+          "from_plant": "C",
+          "to_plant": "A",
+          "cost_change": -1814.15,
+          "carbon_change_kg": 1595.4
+        },
+        {
+          "order_id": "O-024",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -1940.23,
+          "carbon_change_kg": 1011.64
+        },
+        {
+          "order_id": "O-029",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -1666.69,
+          "carbon_change_kg": 953.25
+        },
+        {
+          "order_id": "O-030",
+          "from_plant": "C",
+          "to_plant": "A",
+          "cost_change": -3265.47,
+          "carbon_change_kg": 2871.72
+        },
+        {
+          "order_id": "O-036",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -1102.85,
+          "carbon_change_kg": 1194.9
+        },
+        {
+          "order_id": "O-038",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -1063.14,
+          "carbon_change_kg": 1167.12
+        },
+        {
+          "order_id": "O-039",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -1066.68,
+          "carbon_change_kg": 610.08
+        },
+        {
+          "order_id": "O-040",
+          "from_plant": "A",
+          "to_plant": "C",
+          "cost_change": 1181.88,
+          "carbon_change_kg": -1943.5
+        },
+        {
+          "order_id": "O-043",
+          "from_plant": "C",
+          "to_plant": "A",
+          "cost_change": -962.76,
+          "carbon_change_kg": 2347.2
+        },
+        {
+          "order_id": "O-045",
+          "from_plant": "C",
+          "to_plant": "A",
+          "cost_change": -1735.12,
+          "carbon_change_kg": 1617.58
+        },
+        {
+          "order_id": "O-049",
+          "from_plant": "C",
+          "to_plant": "A",
+          "cost_change": -2581.66,
+          "carbon_change_kg": 1688.94
+        },
+        {
+          "order_id": "O-052",
+          "from_plant": "C",
+          "to_plant": "A",
+          "cost_change": -880.22,
+          "carbon_change_kg": 826.88
+        },
+        {
+          "order_id": "O-053",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -2148.11,
+          "carbon_change_kg": 1120.03
+        },
+        {
+          "order_id": "O-055",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -3421.52,
+          "carbon_change_kg": 1749.795
+        },
+        {
+          "order_id": "O-056",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -2594.0,
+          "carbon_change_kg": 1236.92
+        },
+        {
+          "order_id": "O-063",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -5044.63,
+          "carbon_change_kg": 2276.875
+        },
+        {
+          "order_id": "O-065",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -6330.58,
+          "carbon_change_kg": 2792.25
+        },
+        {
+          "order_id": "O-072",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -3305.1,
+          "carbon_change_kg": 1569.96
+        },
+        {
+          "order_id": "O-083",
+          "from_plant": "B",
+          "to_plant": "C",
+          "cost_change": -486.34,
+          "carbon_change_kg": -463.4
+        },
+        {
+          "order_id": "O-087",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -3531.89,
+          "carbon_change_kg": 1806.24
+        },
+        {
+          "order_id": "O-096",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -3531.89,
+          "carbon_change_kg": 1806.24
+        },
+        {
+          "order_id": "O-097",
+          "from_plant": "C",
+          "to_plant": "A",
+          "cost_change": -1791.1,
+          "carbon_change_kg": 1669.76
+        },
+        {
+          "order_id": "O-100",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -2648.91,
+          "carbon_change_kg": 1354.68
+        },
+        {
+          "order_id": "O-103",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -3528.43,
+          "carbon_change_kg": 944.79
+        },
+        {
+          "order_id": "O-105",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -1666.69,
+          "carbon_change_kg": 953.25
+        },
+        {
+          "order_id": "O-107",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -3950.75,
+          "carbon_change_kg": 1590.24
+        },
+        {
+          "order_id": "O-109",
+          "from_plant": "B",
+          "to_plant": "C",
+          "cost_change": -707.45,
+          "carbon_change_kg": -409.2
+        },
+        {
+          "order_id": "O-114",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -5853.31,
+          "carbon_change_kg": 2089.375
+        },
+        {
+          "order_id": "O-119",
+          "from_plant": "C",
+          "to_plant": "A",
+          "cost_change": -2740.25,
+          "carbon_change_kg": 1765.62
+        },
+        {
+          "order_id": "O-122",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -1801.64,
+          "carbon_change_kg": 939.38
+        },
+        {
+          "order_id": "O-124",
+          "from_plant": "C",
+          "to_plant": "A",
+          "cost_change": -2003.71,
+          "carbon_change_kg": 1823.21
+        },
+        {
+          "order_id": "O-129",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -3282.93,
+          "carbon_change_kg": 1633.35
+        },
+        {
+          "order_id": "O-136",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -2936.16,
+          "carbon_change_kg": 1951.295
+        },
+        {
+          "order_id": "O-141",
+          "from_plant": "B",
+          "to_plant": "A",
+          "cost_change": -1030.32,
+          "carbon_change_kg": 1003.49
+        },
+        {
+          "order_id": "O-149",
+          "from_plant": "C",
+          "to_plant": "B",
+          "cost_change": 1225.65,
+          "carbon_change_kg": 742.0
+        }
+      ],
+      "orders_same_plant": 112,
+      "orders_week_shifted": [
+        "O-002",
+        "O-004",
+        "O-007",
+        "O-008",
+        "O-011",
+        "O-012",
+        "O-013",
+        "O-020",
+        "O-023",
+        "O-025",
+        "O-028",
+        "O-034",
+        "O-035",
+        "O-037",
+        "O-042",
+        "O-044",
+        "O-046",
+        "O-047",
+        "O-048",
+        "O-050",
+        "O-051",
+        "O-059",
+        "O-060",
+        "O-066",
+        "O-068",
+        "O-069",
+        "O-070",
+        "O-073",
+        "O-074",
+        "O-075",
+        "O-076",
+        "O-077",
+        "O-079",
+        "O-080",
+        "O-081",
+        "O-082",
+        "O-085",
+        "O-088",
+        "O-090",
+        "O-091",
+        "O-092",
+        "O-093",
+        "O-099",
+        "O-101",
+        "O-104",
+        "O-108",
+        "O-110",
+        "O-112",
+        "O-115",
+        "O-120",
+        "O-121",
+        "O-125",
+        "O-126",
+        "O-134",
+        "O-135",
+        "O-137",
+        "O-138",
+        "O-142",
+        "O-146",
+        "O-148",
+        "O-150"
+      ],
+      "newly_late": [
+        "O-020",
+        "O-048",
+        "O-069",
+        "O-073",
+        "O-077",
+        "O-080",
+        "O-104",
+        "O-120",
+        "O-126",
+        "O-150"
+      ],
+      "newly_unassigned": [],
+      "warnings": []
+    }
+  },
+  "cheapest_plant_baseline": {
+    "total_cost": 1300934.78,
+    "total_carbon_t": 327.797,
+    "late_orders": 106,
+    "unassigned": 0
+  }
+}

@@ -1,0 +1,37 @@
+plant,destination,transport_cost_per_unit,transit_days,duty_pct,carbon_kg_per_unit,mode
+A,Germany,3.42,22,6.0,1.7,sea
+A,France,3.42,22,6.0,1.7,sea
+A,UK,3.64,24,5.0,1.8,sea
+A,USA,4.08,28,25.0,2.0,sea
+A,Mexico,4.3,30,10.0,2.1,sea
+A,Brazil,4.3,30,18.0,2.1,sea
+A,India,2.1,2,0.0,0.5,road
+A,UAE,2.85,5,3.0,1.25,road
+A,China,1.99,9,4.0,1.05,sea
+A,Japan,2.32,12,3.0,1.2,sea
+A,Australia,2.54,14,2.0,1.3,sea
+A,South Africa,2.65,15,8.0,1.35,sea
+B,Germany,2.1,2,0.0,0.5,road
+B,France,2.35,3,0.0,0.75,road
+B,UK,2.6,4,3.0,1.0,road
+B,USA,2.32,12,5.0,1.2,sea
+B,Mexico,2.76,16,4.0,1.4,sea
+B,Brazil,2.98,18,14.0,1.5,sea
+B,India,2.54,14,15.0,1.3,sea
+B,UAE,2.1,10,5.0,1.1,sea
+B,China,3.75,25,8.0,1.85,sea
+B,Japan,3.86,26,2.0,1.9,sea
+B,Australia,4.3,30,4.0,2.1,sea
+B,South Africa,2.76,16,6.0,1.4,sea
+C,Germany,2.21,11,2.0,1.15,sea
+C,France,2.21,11,2.0,1.15,sea
+C,UK,2.1,10,2.0,1.1,sea
+C,USA,2.35,3,0.0,0.75,road
+C,Mexico,3.1,6,0.0,1.5,road
+C,Brazil,2.54,14,12.0,1.3,sea
+C,India,3.64,24,15.0,1.8,sea
+C,UAE,2.98,18,5.0,1.5,sea
+C,China,2.98,18,12.0,1.5,sea
+C,Japan,2.76,16,4.0,1.4,sea
+C,Australia,3.42,22,4.0,1.7,sea
+C,South Africa,3.2,20,7.0,1.6,sea
