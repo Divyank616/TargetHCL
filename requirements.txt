@@ -1,0 +1,7 @@
+pandas>=2.0
+pulp==2.9.0
+highspy>=1.7
+streamlit>=1.38
+google-genai>=1.0
+plotly>=5.0
+python-dotenv>=1.0
